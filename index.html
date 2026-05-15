@@ -710,11 +710,9 @@ document.addEventListener('keydown', e => {
 
 /* ── EDIT MODE ── */
 let editMode = false;
-if (new URLSearchParams(location.search).get('edit') === '1') {
-  document.getElementById('edit-trigger').style.display = 'flex';
-}
+let ghToken = '';
 const EDIT_TAGS = ['h1','h2','h3','h4','p','span','div','li','a','strong','em','blockquote'];
-const SKIP_IDS = ['edit-toolbar','modal'];
+const SKIP_IDS = ['edit-toolbar','modal','edit-trigger'];
 
 function toggleEditMode() {
   editMode = !editMode;
@@ -723,7 +721,6 @@ function toggleEditMode() {
   toolbar.style.display = editMode ? 'flex' : 'none';
   trigger.style.display = editMode ? 'none' : 'flex';
   document.body.classList.toggle('edit-active', editMode);
-
   document.querySelectorAll(EDIT_TAGS.join(',')).forEach(el => {
     if (SKIP_IDS.some(id => el.closest('#'+id))) return;
     if (el.children.length > 0 && !['STRONG','EM','A','SPAN'].includes(el.tagName)) return;
@@ -731,32 +728,58 @@ function toggleEditMode() {
   });
 }
 
-function saveHTML() {
+function getCleanHTML() {
   document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
   document.body.classList.remove('edit-active');
   const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
   document.body.classList.add('edit-active');
-  if (editMode) { document.querySelectorAll(EDIT_TAGS.join(',')).forEach(el => { if (SKIP_IDS.some(id => el.closest('#'+id))) return; if (el.children.length > 0 && !['STRONG','EM','A','SPAN'].includes(el.tagName)) return; el.contentEditable = 'true'; }); }
-
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
-  a.download = 'rost-hero-factory3.html';
-  a.click();
-  showSaveToast('Файл сохранён — загрузи на Netlify ✓');
+  if (editMode) document.querySelectorAll(EDIT_TAGS.join(',')).forEach(el => {
+    if (SKIP_IDS.some(id => el.closest('#'+id))) return;
+    if (el.children.length > 0 && !['STRONG','EM','A','SPAN'].includes(el.tagName)) return;
+    el.contentEditable = 'true';
+  });
+  return html;
 }
 
-function showSaveToast(msg) {
+async function saveHTML() {
+  const html = getCleanHTML();
+  if (!ghToken) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
+    a.download = 'index.html';
+    a.click();
+    showSaveToast('Скачан файл ✓');
+    return;
+  }
+  showSaveToast('Публикую...');
+  try {
+    const api = 'https://api.github.com/repos/dkurdyumoff/rost-consulting/contents/index.html';
+    const fileRes = await fetch(api, { headers: { Authorization: 'Bearer ' + ghToken } });
+    const fileData = await fileRes.json();
+    const content = btoa(unescape(encodeURIComponent(html)));
+    const res = await fetch(api, {
+      method: 'PUT',
+      headers: { Authorization: 'Bearer ' + ghToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Update from editor', content, sha: fileData.sha })
+    });
+    if (res.ok) showSaveToast('Опубликовано на сайте ✓ (~1 мин)');
+    else showSaveToast('Ошибка: ' + (await res.json()).message);
+  } catch(e) { showSaveToast('Ошибка публикации ✕'); }
+}
+
+function showSaveToast(msg, color) {
   let t = document.getElementById('save-toast');
   if (!t) {
     t = document.createElement('div');
     t.id = 'save-toast';
-    t.style.cssText = 'position:fixed;bottom:90px;right:24px;background:#059669;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;z-index:10000;transition:opacity 0.4s;font-family:sans-serif;';
+    t.style.cssText = 'position:fixed;bottom:90px;right:24px;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;z-index:10000;transition:opacity 0.4s;font-family:sans-serif;';
     document.body.appendChild(t);
   }
+  t.style.background = color || '#059669';
   t.textContent = msg;
   t.style.opacity = '1';
   clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.style.opacity = '0', 2000);
+  if (msg !== 'Публикую...') t._timer = setTimeout(() => t.style.opacity = '0', 3000);
 }
 </script>
 
@@ -807,4 +830,13 @@ function toggleMsg() {
 
 
 
-<div id="save-toast" style="position: fixed; bottom: 90px; right: 24px; background: rgb(5, 150, 105); color: rgb(255, 255, 255); padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; z-index: 10000; transition: opacity 0.4s; font-family: sans-serif; opacity: 0;">Сохранено и задеплоено ✓</div></body></html>
+<script>
+(function() {
+  const p = new URLSearchParams(location.search);
+  if (p.get('edit') === '1') {
+    ghToken = p.get('token') || '';
+    document.getElementById('edit-trigger').style.display = 'flex';
+  }
+})();
+</script>
+</body></html>
