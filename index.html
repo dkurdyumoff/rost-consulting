@@ -710,9 +710,14 @@ document.addEventListener('keydown', e => {
 
 /* ── EDIT MODE ── */
 let editMode = false;
-let ghToken = '';
+let ghToken = new URLSearchParams(location.search).get('token') || '';
 const EDIT_TAGS = ['h1','h2','h3','h4','p','span','div','li','a','strong','em','blockquote'];
 const SKIP_IDS = ['edit-toolbar','modal','edit-trigger'];
+if (new URLSearchParams(location.search).get('edit') === '1') {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('edit-trigger').style.display = 'flex';
+  });
+}
 
 function toggleEditMode() {
   editMode = !editMode;
@@ -764,7 +769,7 @@ async function saveHTML() {
     });
     if (res.ok) showSaveToast('Опубликовано на сайте ✓ (~1 мин)');
     else showSaveToast('Ошибка: ' + (await res.json()).message);
-  } catch(e) { showSaveToast('Ошибка публикации ✕'); }
+  } catch(e) { showSaveToast('Ошибка: ' + e.message, '#DC2626'); }
 }
 
 function showSaveToast(msg, color) {
@@ -830,13 +835,4 @@ function toggleMsg() {
 
 
 
-<script>
-(function() {
-  const p = new URLSearchParams(location.search);
-  if (p.get('edit') === '1') {
-    ghToken = p.get('token') || '';
-    document.getElementById('edit-trigger').style.display = 'flex';
-  }
-})();
-</script>
 </body></html>
