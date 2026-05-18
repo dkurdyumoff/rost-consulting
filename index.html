@@ -256,12 +256,10 @@
     section { padding: 56px 5%; }
     .prob-grid, .ben-grid, .prod-grid, .stats-row, .stats-row2, .warn-grid { grid-template-columns: 1fr; }
     .guar-box { grid-template-columns: 1fr; text-align: center; }
-    .nav-cta { display: none; }
-    .prod-extra { display: none !important; }
   }
 </style>
 </head>
-<body>
+<body class="">
 
 <nav>
   <div>
@@ -275,88 +273,108 @@
 <section class="hero">
   <div>
     <h1>Ваш завод теряет <em>миллионы</em><br>ежедневно</h1>
-    <p class="hero-sub">РОСТ — технический консалтинг для промышленных предприятий, которые теряют деньги на простоях, энергозатратах и перерасходе материалов.</p>
+    <p class="hero-sub">РОСТ — технический консалтинг для промышленных предприятий, которые теряют деньги на простоях, энергозатратах и перерасходе материалов</p>
     <p class="hero-founder">Иван Курдюмов — производственный директор с 24-летним опытом в Carlsberg и «Содружестве». Практик, а не теоретик. 10+ заводов в управлении.</p>
     <div class="hero-actions">
       <a href="#" onclick="openModal(event)" class="btn-main">Заказать диагностику →</a>
       <a href="#achievements" class="btn-outline">Результаты в цифрах</a>
     </div>
   </div>
+  <!-- Вариант 3: Промышленный комплекс с силосами, закатное небо -->
   <div class="hero-visual" style="animation:float 6s ease-in-out infinite;">
     <div style="position:relative;">
 
       <svg viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;display:block;">
-        <!-- Sky -->
-        <rect width="520" height="340" fill="#EFF6FF" rx="16"/>
+        <!-- Sunset sky -->
+        <defs>
+          <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#DBEAFE"></stop>
+            <stop offset="60%" stop-color="#BFDBFE"></stop>
+            <stop offset="100%" stop-color="#E0F2FE"></stop>
+          </linearGradient>
+          <linearGradient id="silo" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1E3A8A"></stop>
+            <stop offset="50%" stop-color="#2563EB"></stop>
+            <stop offset="100%" stop-color="#1E3A8A"></stop>
+          </linearGradient>
+        </defs>
+        <rect width="520" height="340" fill="url(#sky3)" rx="16"></rect>
 
         <!-- Ground -->
-        <rect x="0" y="280" width="520" height="60" fill="#DBEAFE" rx="0"/>
+        <rect x="0" y="278" width="520" height="62" fill="#BFDBFE"></rect>
+        <rect x="0" y="278" width="520" height="5" fill="#93C5FD"></rect>
 
-        <!-- Building left -->
-        <rect x="40" y="160" width="100" height="120" fill="#1E40AF" rx="4"/>
-        <rect x="55" y="175" width="25" height="25" fill="#93C5FD" rx="2"/>
-        <rect x="90" y="175" width="25" height="25" fill="#93C5FD" rx="2"/>
-        <rect x="55" y="212" width="25" height="25" fill="#93C5FD" rx="2"/>
-        <rect x="90" y="212" width="25" height="25" fill="#93C5FD" rx="2"/>
-        <rect x="65" y="245" width="30" height="35" fill="#1E3A8A" rx="2"/>
+        <!-- Silos left (cylinders as ellipses+rects) -->
+        <rect x="22" y="140" width="34" height="142" fill="#1E3A8A" rx="17"></rect>
+        <ellipse cx="39" cy="140" rx="17" ry="8" fill="#2563EB"></ellipse>
+        <ellipse cx="39" cy="278" rx="17" ry="7" fill="#1E3A8A"></ellipse>
+        <rect x="62" y="155" width="30" height="125" fill="#1E40AF" rx="15"></rect>
+        <ellipse cx="77" cy="155" rx="15" ry="7" fill="#3B82F6"></ellipse>
+        <rect x="96" y="168" width="26" height="112" fill="#2563EB" rx="13"></rect>
+        <ellipse cx="109" cy="168" rx="13" ry="6" fill="#60A5FA"></ellipse>
+        <!-- Silo pipe horizontal -->
+        <rect x="36" y="210" width="90" height="7" fill="#3B82F6" rx="3"></rect>
+        <rect x="36" y="230" width="70" height="5" fill="#60A5FA" rx="2"></rect>
 
-        <!-- Building center (main) -->
-        <rect x="170" y="100" width="180" height="180" fill="#1E3A8A" rx="4"/>
-        <rect x="185" y="115" width="35" height="30" fill="#93C5FD" rx="2"/>
-        <rect x="232" y="115" width="35" height="30" fill="#93C5FD" rx="2"/>
-        <rect x="279" y="115" width="35" height="30" fill="#93C5FD" rx="2"/>
-        <rect x="185" y="158" width="35" height="30" fill="#93C5FD" rx="2"/>
-        <rect x="232" y="158" width="35" height="30" fill="#BFDBFE" rx="2"/>
-        <rect x="279" y="158" width="35" height="30" fill="#93C5FD" rx="2"/>
-        <rect x="185" y="201" width="35" height="30" fill="#93C5FD" rx="2"/>
-        <rect x="279" y="201" width="35" height="30" fill="#93C5FD" rx="2"/>
+        <!-- Main factory building center -->
+        <rect x="140" y="130" width="220" height="150" fill="#1E3A8A" rx="4"></rect>
+        <!-- Roof detail -->
+        <rect x="138" y="126" width="224" height="8" fill="#1E40AF" rx="2"></rect>
+        <rect x="160" y="110" width="40" height="22" fill="#2563EB" rx="2"></rect>
+        <rect x="300" y="118" width="35" height="14" fill="#2563EB" rx="2"></rect>
+        <!-- Windows grid -->
+        <rect x="155" y="148" width="32" height="26" fill="#93C5FD" rx="2"></rect>
+        <rect x="198" y="148" width="32" height="26" fill="#BFDBFE" rx="2"></rect>
+        <rect x="241" y="148" width="32" height="26" fill="#93C5FD" rx="2"></rect>
+        <rect x="284" y="148" width="32" height="26" fill="#93C5FD" rx="2"></rect>
+        <rect x="327" y="148" width="28" height="26" fill="#BFDBFE" rx="2"></rect>
+        <rect x="155" y="188" width="32" height="26" fill="#BFDBFE" rx="2"></rect>
+        <rect x="198" y="188" width="32" height="26" fill="#93C5FD" rx="2"></rect>
+        <rect x="241" y="188" width="32" height="26" fill="#93C5FD" rx="2"></rect>
+        <rect x="284" y="188" width="32" height="26" fill="#BFDBFE" rx="2"></rect>
+        <rect x="327" y="188" width="28" height="26" fill="#93C5FD" rx="2"></rect>
         <!-- Door -->
-        <rect x="228" y="238" width="44" height="42" fill="#1E40AF" rx="2"/>
-        <circle cx="264" cy="259" r="3" fill="#93C5FD"/>
+        <rect x="233" y="234" width="50" height="46" fill="#1E40AF" rx="2"></rect>
+        <circle cx="274" cy="258" r="3" fill="#93C5FD"></circle>
+        <!-- РОСТ sign -->
+        <text x="250" y="124" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" font-weight="900" fill="#60A5FA" letter-spacing="5">РОСТ</text>
 
-        <!-- Building right -->
-        <rect x="380" y="190" width="100" height="90" fill="#1E40AF" rx="4"/>
-        <rect x="393" y="204" width="22" height="22" fill="#93C5FD" rx="2"/>
-        <rect x="424" y="204" width="22" height="22" fill="#93C5FD" rx="2"/>
-        <rect x="393" y="237" width="22" height="22" fill="#BFDBFE" rx="2"/>
-        <rect x="424" y="237" width="22" height="22" fill="#93C5FD" rx="2"/>
-        <rect x="453" y="237" width="22" height="22" fill="#93C5FD" rx="2"/>
+        <!-- Warehouse right -->
+        <rect x="370" y="195" width="130" height="85" fill="#1E40AF" rx="4"></rect>
+        <!-- Arched roof -->
+        <ellipse cx="435" cy="195" rx="65" ry="18" fill="#2563EB"></ellipse>
+        <rect x="370" y="195" width="130" height="10" fill="#2563EB"></rect>
+        <rect x="383" y="212" width="28" height="22" fill="#93C5FD" rx="2"></rect>
+        <rect x="421" y="212" width="28" height="22" fill="#BFDBFE" rx="2"></rect>
+        <rect x="459" y="212" width="28" height="22" fill="#93C5FD" rx="2"></rect>
+        <rect x="383" y="246" width="28" height="20" fill="#BFDBFE" rx="2"></rect>
+        <rect x="459" y="246" width="28" height="20" fill="#93C5FD" rx="2"></rect>
+        <!-- Gate -->
+        <rect x="415" y="242" width="40" height="38" fill="#1E3A8A" rx="2"></rect>
 
         <!-- Chimneys -->
-        <rect x="62" y="100" width="18" height="65" fill="#3B82F6" rx="3"/>
-        <rect x="92" y="115" width="18" height="50" fill="#3B82F6" rx="3"/>
-        <rect x="200" y="48" width="20" height="58" fill="#2563EB" rx="3"/>
-        <rect x="298" y="58" width="20" height="48" fill="#2563EB" rx="3"/>
-        <rect x="400" y="140" width="16" height="55" fill="#3B82F6" rx="3"/>
+        <rect x="175" y="68" width="18" height="64" fill="#3B82F6" rx="3"></rect>
+        <rect x="315" y="78" width="18" height="54" fill="#3B82F6" rx="3"></rect>
+        <rect x="175" y="64" width="26" height="8" fill="#1E40AF" rx="2"></rect>
+        <rect x="315" y="74" width="26" height="8" fill="#1E40AF" rx="2"></rect>
 
-        <!-- Chimney tops -->
-        <rect x="58" y="96" width="26" height="8" fill="#1E40AF" rx="2"/>
-        <rect x="88" y="111" width="26" height="8" fill="#1E40AF" rx="2"/>
-        <rect x="196" y="44" width="28" height="8" fill="#1D4ED8" rx="2"/>
-        <rect x="294" y="54" width="28" height="8" fill="#1D4ED8" rx="2"/>
-        <rect x="396" y="136" width="24" height="8" fill="#1E40AF" rx="2"/>
+        <!-- Conveyor belt -->
+        <line x1="130" y1="245" x2="150" y2="245" stroke="#60A5FA" stroke-width="4" stroke-linecap="round"></line>
+        <line x1="150" y1="245" x2="160" y2="255" stroke="#60A5FA" stroke-width="4" stroke-linecap="round"></line>
+        <line x1="360" y1="248" x2="375" y2="248" stroke="#60A5FA" stroke-width="4" stroke-linecap="round"></line>
 
-        <!-- Smoke animated -->
-        <g opacity="0.5">
-          <circle cx="71" cy="88" r="7" fill="#BFDBFE"><animate attributeName="cy" values="88;60;88" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite"/><animate attributeName="r" values="7;12;7" dur="3s" repeatCount="indefinite"/></circle>
-          <circle cx="101" cy="100" r="6" fill="#BFDBFE"><animate attributeName="cy" values="100;74;100" dur="2.5s" repeatCount="indefinite" begin="0.5s"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2.5s" repeatCount="indefinite" begin="0.5s"/></circle>
-          <circle cx="210" cy="36" r="8" fill="#DBEAFE"><animate attributeName="cy" values="36;8;36" dur="3.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;0;0.6" dur="3.5s" repeatCount="indefinite"/><animate attributeName="r" values="8;14;8" dur="3.5s" repeatCount="indefinite"/></circle>
-          <circle cx="308" cy="46" r="7" fill="#DBEAFE"><animate attributeName="cy" values="46;20;46" dur="3s" repeatCount="indefinite" begin="1s"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite" begin="1s"/></circle>
-          <circle cx="408" cy="126" r="6" fill="#BFDBFE"><animate attributeName="cy" values="126;100;126" dur="2.8s" repeatCount="indefinite" begin="0.3s"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite" begin="0.3s"/></circle>
+        <!-- Smoke -->
+        <g opacity="0.55">
+          <circle cx="184" cy="56" r="8" fill="#BFDBFE"><animate attributeName="cy" values="56;26;56" dur="3.5s" repeatCount="indefinite"></animate><animate attributeName="opacity" values="0.55;0;0.55" dur="3.5s" repeatCount="indefinite"></animate><animate attributeName="r" values="8;14;8" dur="3.5s" repeatCount="indefinite"></animate></circle>
+          <circle cx="195" cy="42" r="6" fill="#DBEAFE"><animate attributeName="cy" values="42;14;42" dur="2.8s" repeatCount="indefinite" begin="0.4s"></animate><animate attributeName="opacity" values="0.4;0;0.4" dur="2.8s" repeatCount="indefinite" begin="0.4s"></animate></circle>
+          <circle cx="324" cy="66" r="7" fill="#BFDBFE"><animate attributeName="cy" values="66;38;66" dur="3.2s" repeatCount="indefinite" begin="1s"></animate><animate attributeName="opacity" values="0.5;0;0.5" dur="3.2s" repeatCount="indefinite" begin="1s"></animate></circle>
+          <circle cx="335" cy="52" r="5" fill="#DBEAFE"><animate attributeName="cy" values="52;28;52" dur="2.5s" repeatCount="indefinite" begin="0.6s"></animate><animate attributeName="opacity" values="0.4;0;0.4" dur="2.5s" repeatCount="indefinite" begin="0.6s"></animate></circle>
         </g>
 
-        <!-- Pipe connecting buildings -->
-        <rect x="140" y="220" width="32" height="8" fill="#60A5FA" rx="4"/>
-        <rect x="350" y="230" width="32" height="8" fill="#60A5FA" rx="4"/>
-
-        <!-- Road -->
-        <rect x="0" y="280" width="520" height="10" fill="#BFDBFE"/>
-        <rect x="220" y="283" width="30" height="4" fill="#EFF6FF" rx="2"/>
-        <rect x="260" y="283" width="30" height="4" fill="#EFF6FF" rx="2"/>
-        <rect x="300" y="283" width="30" height="4" fill="#EFF6FF" rx="2"/>
-
-        <!-- РОСТ label on building -->
-        <text x="260" y="90" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="14" font-weight="900" fill="#60A5FA" letter-spacing="4">РОСТ</text>
+        <!-- Road markings -->
+        <rect x="220" y="285" width="30" height="4" fill="#EFF6FF" rx="2"></rect>
+        <rect x="260" y="285" width="30" height="4" fill="#EFF6FF" rx="2"></rect>
+        <rect x="300" y="285" width="30" height="4" fill="#EFF6FF" rx="2"></rect>
       </svg>
 
       <!-- KPI badges floating -->
@@ -377,7 +395,7 @@
 <section class="prob-bg">
   <div class="s-tag">Проблема</div>
   <h2>Промышленные предприятия<br>теряют деньги системно</h2>
-  <p class="s-desc">Три источника потерь, которые есть на каждом заводе — но большинство предпочитает об этом не думать.</p>
+  <p class="s-desc">Три источника потерь, которые есть на каждом заводе — но большинство предпочитает об этом не думать</p>
   <div class="prob-grid">
     <div class="prob-card">
       <div class="prob-ico">⚙️</div>
@@ -692,15 +710,17 @@ document.addEventListener('keydown', e => {
 
 /* ── EDIT MODE ── */
 let editMode = false;
+let ghToken = '';
 const EDIT_TAGS = ['h1','h2','h3','h4','p','span','div','li','a','strong','em','blockquote'];
-const SKIP_IDS = ['edit-toolbar','modal'];
+const SKIP_IDS = ['edit-toolbar','modal','edit-trigger'];
 
 function toggleEditMode() {
   editMode = !editMode;
   const toolbar = document.getElementById('edit-toolbar');
+  const trigger = document.getElementById('edit-trigger');
   toolbar.style.display = editMode ? 'flex' : 'none';
+  trigger.style.display = editMode ? 'none' : 'flex';
   document.body.classList.toggle('edit-active', editMode);
-
   document.querySelectorAll(EDIT_TAGS.join(',')).forEach(el => {
     if (SKIP_IDS.some(id => el.closest('#'+id))) return;
     if (el.children.length > 0 && !['STRONG','EM','A','SPAN'].includes(el.tagName)) return;
@@ -708,102 +728,58 @@ function toggleEditMode() {
   });
 }
 
-const _urlParams = new URLSearchParams(location.search);
-const _ghToken = _urlParams.get('token');
-const _ghRepo = 'dkurdyumoff/rost-consulting';
-const _ghFile = 'index.html';
-
-// Auto-activate edit mode if ?edit=1 in URL
-if (_urlParams.get('edit') === '1') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', toggleEditMode);
-  } else {
-    setTimeout(toggleEditMode, 100);
-  }
+function getCleanHTML() {
+  document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+  document.body.classList.remove('edit-active');
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  document.body.classList.add('edit-active');
+  if (editMode) document.querySelectorAll(EDIT_TAGS.join(',')).forEach(el => {
+    if (SKIP_IDS.some(id => el.closest('#'+id))) return;
+    if (el.children.length > 0 && !['STRONG','EM','A','SPAN'].includes(el.tagName)) return;
+    el.contentEditable = 'true';
+  });
+  return html;
 }
 
 async function saveHTML() {
-  // Fully deactivate edit mode before capturing HTML
-  const wasEditing = editMode;
-  editMode = false;
-  document.getElementById('edit-toolbar').style.display = 'none';
-  document.body.classList.remove('edit-active');
-  document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
-
-  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-
-  // Restore edit mode for current session
-  if (wasEditing) toggleEditMode();
-
-  // --- GitHub API save ---
-  if (_ghToken) {
-    try {
-      showSaveToast('Сохраняю...');
-      // Get current SHA
-      const meta = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
-        headers: { 'Authorization': `token ${_ghToken}`, 'Accept': 'application/vnd.github.v3+json' }
-      }).then(r => r.json());
-
-      const encoded = btoa(unescape(encodeURIComponent(html)));
-      const res = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `token ${_ghToken}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/vnd.github.v3+json'
-        },
-        body: JSON.stringify({
-          message: 'Update via edit mode',
-          content: encoded,
-          sha: meta.sha
-        })
-      });
-      if (res.ok) {
-        showSaveToast('Сохранено и задеплоено на GitHub ✓');
-      } else {
-        const err = await res.json();
-        showSaveToast('Ошибка GitHub: ' + (err.message || res.status));
-      }
-    } catch(e) {
-      showSaveToast('Ошибка: ' + e.message);
-    }
-    return;
-  }
-
-  // --- Localhost server save ---
-  try {
-    const res = await fetch('http://localhost:3456/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ html })
-    });
-    if (res.ok) {
-      showSaveToast('Сохранено локально ✓');
-    } else {
-      showSaveToast('Ошибка сервера ✕');
-    }
-  } catch(e) {
-    // Fallback: download
+  const html = getCleanHTML();
+  if (!ghToken) {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
-    a.download = 'rost-v1-blue.html';
+    a.download = 'index.html';
     a.click();
-    showSaveToast('Скачан файл (сервер недоступен)');
+    showSaveToast('Скачан файл ✓');
+    return;
   }
+  showSaveToast('Публикую...');
+  try {
+    const api = 'https://api.github.com/repos/dkurdyumoff/rost-consulting/contents/index.html';
+    const fileRes = await fetch(api, { headers: { Authorization: 'Bearer ' + ghToken } });
+    const fileData = await fileRes.json();
+    const content = btoa(unescape(encodeURIComponent(html)));
+    const res = await fetch(api, {
+      method: 'PUT',
+      headers: { Authorization: 'Bearer ' + ghToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Update from editor', content, sha: fileData.sha })
+    });
+    if (res.ok) showSaveToast('Опубликовано на сайте ✓ (~1 мин)');
+    else showSaveToast('Ошибка: ' + (await res.json()).message);
+  } catch(e) { showSaveToast('Ошибка публикации ✕'); }
 }
 
-function showSaveToast(msg) {
+function showSaveToast(msg, color) {
   let t = document.getElementById('save-toast');
   if (!t) {
     t = document.createElement('div');
     t.id = 'save-toast';
-    t.style.cssText = 'position:fixed;bottom:90px;right:24px;background:#059669;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;z-index:10000;transition:opacity 0.4s;font-family:sans-serif;';
+    t.style.cssText = 'position:fixed;bottom:90px;right:24px;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;z-index:10000;transition:opacity 0.4s;font-family:sans-serif;';
     document.body.appendChild(t);
   }
+  t.style.background = color || '#059669';
   t.textContent = msg;
   t.style.opacity = '1';
   clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.style.opacity = '0', 2000);
+  if (msg !== 'Публикую...') t._timer = setTimeout(() => t.style.opacity = '0', 3000);
 }
 </script>
 
@@ -818,9 +794,9 @@ function showSaveToast(msg) {
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"></path></svg>
       Telegram
     </a>
-    <a href="https://web.max.ru/25729670" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;background:#1a1a2e;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(15,23,42,0.35);white-space:nowrap;">
-      <svg width="20" height="20" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#2D2D7A"/><text x="20" y="27" text-anchor="middle" font-size="14" font-weight="900" fill="#fff" font-family="sans-serif">MAX</text></svg>
-      Max
+    <a href="tel:+79622676163" style="display:flex;align-items:center;gap:10px;background:#059669;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(5,150,105,0.35);white-space:nowrap;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>
+      Позвонить
     </a>
   </div>
   <button onclick="toggleMsg()" id="msg-toggle" style="width:52px;height:52px;border-radius:50%;background:var(--p);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(30,64,175,0.4);display:flex;align-items:center;justify-content:center;transition:all 0.2s;">
@@ -835,10 +811,13 @@ function toggleMsg() {
 }
 </script>
 
+<!-- EDIT TRIGGER BUTTON -->
+<button id="edit-trigger" onclick="toggleEditMode()" title="Режим редактирования" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; width: 44px; height: 44px; border-radius: 50%; background: rgb(15, 23, 42); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; cursor: pointer; box-shadow: rgba(0, 0, 0, 0.35) 0px 4px 16px; display: none; align-items: center; justify-content: center; font-size: 18px; opacity: 0.4; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.4'">✏️</button>
+
 <!-- EDIT TOOLBAR -->
-<div id="edit-toolbar" style="display:none; position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: rgb(15, 23, 42); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 32px;">
+<div id="edit-toolbar" style="display: flex; position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: rgb(15, 23, 42); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 32px;">
   <span style="color:rgba(255,255,255,0.5);font-size:12px;font-family:sans-serif;">✏️ Режим редактирования</span>
-  <button onclick="saveHTML()" style="background:#1E40AF;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">💾 Сохранить и задеплоить</button>
+  <button onclick="saveHTML()" style="background:#1E40AF;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">💾 Сохранить</button>
   <button onclick="toggleEditMode()" style="background:#374151;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;">✕ Выйти</button>
 </div>
 
@@ -851,4 +830,13 @@ function toggleMsg() {
 
 
 
-<div id="save-toast" style="position: fixed; bottom: 90px; right: 24px; background: rgb(5, 150, 105); color: rgb(255, 255, 255); padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; z-index: 10000; transition: opacity 0.4s; font-family: sans-serif; opacity: 0;">Сохранено и задеплоено ✓</div></body></html>
+<script>
+(function() {
+  const p = new URLSearchParams(location.search);
+  if (p.get('edit') === '1') {
+    ghToken = p.get('token') || '';
+    document.getElementById('edit-trigger').style.display = 'flex';
+  }
+})();
+</script>
+</body></html>
