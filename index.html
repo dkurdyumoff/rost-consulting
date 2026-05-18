@@ -711,21 +711,29 @@ document.addEventListener('keydown', e => {
 /* ── EDIT MODE ── */
 let editMode = false;
 let ghToken = new URLSearchParams(location.search).get('token') || '';
-const EDIT_TAGS = ['h1','h2','h3','h4','p','li','blockquote'];
-const INLINE = new Set(['STRONG','EM','A','SPAN','BR','B','I','U','MARK','SMALL','SUP','SUB']);
-const SKIP_IDS = ['edit-toolbar','modal','edit-trigger'];
+const SKIP_IDS = ['edit-toolbar','edit-trigger','modal','msg-float','site-footer'];
+const SKIP_TAGS = new Set(['SCRIPT','STYLE','NOSCRIPT','META','LINK','IMG','INPUT','BUTTON','SELECT','TEXTAREA','SVG','PATH','RECT','CIRCLE','ELLIPSE','POLYLINE','POLYGON','LINE','DEFS','G','USE','ANIMATE','NAV','FOOTER']);
+const BLOCK_TAGS = new Set(['DIV','P','H1','H2','H3','H4','H5','H6','UL','OL','LI','BLOCKQUOTE','SECTION','ARTICLE','HEADER','MAIN','ASIDE','TABLE','TR','TD','TH','FORM','FIGURE']);
 if (new URLSearchParams(location.search).get('edit') === '1') {
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('edit-trigger').style.display = 'flex';
   });
 }
 
-function canEdit(el) {
-  if (SKIP_IDS.some(id => el.closest('#'+id))) return false;
-  for (const child of el.children) {
-    if (!INLINE.has(child.tagName)) return false;
-  }
-  return true;
+function getEditables() {
+  const result = [];
+  document.querySelectorAll('*').forEach(el => {
+    if (SKIP_TAGS.has(el.tagName)) return;
+    if (SKIP_IDS.some(id => el.closest('#'+id))) return;
+    if (!el.textContent.trim()) return;
+    for (const child of el.children) {
+      if (BLOCK_TAGS.has(child.tagName)) return;
+    }
+    result.push(el);
+  });
+  // Remove elements whose parent is also editable (prefer editing parent)
+  const set = new Set(result);
+  return result.filter(el => !set.has(el.parentElement));
 }
 
 function toggleEditMode() {
@@ -735,34 +743,30 @@ function toggleEditMode() {
   toolbar.style.display = editMode ? 'flex' : 'none';
   trigger.style.display = editMode ? 'none' : 'flex';
   document.body.classList.toggle('edit-active', editMode);
-  document.querySelectorAll(EDIT_TAGS.join(',')).forEach(el => {
-    if (!canEdit(el)) return;
-    el.contentEditable = editMode ? 'true' : 'false';
-  });
+  getEditables().forEach(el => { el.contentEditable = editMode ? 'true' : 'false'; });
 }
 
 function getCleanHTML() {
-  document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+  getEditables().forEach(el => el.removeAttribute('contenteditable'));
   document.body.classList.remove('edit-active');
   const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
   document.body.classList.add('edit-active');
-  if (editMode) document.querySelectorAll(EDIT_TAGS.join(',')).forEach(el => {
-    if (!canEdit(el)) return;
-    el.contentEditable = 'true';
-  });
+  if (editMode) getEditables().forEach(el => { el.contentEditable = 'true'; });
   return html;
+}
+
+function downloadHTML() {
+  const html = getCleanHTML();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
+  a.download = 'index.html';
+  a.click();
+  showSaveToast('Файл скачан ✓');
 }
 
 async function saveHTML() {
   const html = getCleanHTML();
-  if (!ghToken) {
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
-    a.download = 'index.html';
-    a.click();
-    showSaveToast('Скачан файл ✓');
-    return;
-  }
+  if (!ghToken) { downloadHTML(); return; }
   showSaveToast('Публикую...');
   try {
     const api = 'https://api.github.com/repos/dkurdyumoff/rost-consulting/contents/index.html';
@@ -774,8 +778,8 @@ async function saveHTML() {
       headers: { Authorization: 'Bearer ' + ghToken, 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: 'Update from editor', content, sha: fileData.sha })
     });
-    if (res.ok) showSaveToast('Опубликовано на сайте ✓ (~1 мин)');
-    else showSaveToast('Ошибка: ' + (await res.json()).message);
+    if (res.ok) showSaveToast('Опубликовано ✓ (~1 мин)');
+    else showSaveToast('Ошибка: ' + (await res.json()).message, '#DC2626');
   } catch(e) { showSaveToast('Ошибка: ' + e.message, '#DC2626'); }
 }
 
@@ -829,8 +833,9 @@ function toggleMsg() {
 <!-- EDIT TOOLBAR -->
 <div id="edit-toolbar" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:rgb(15,23,42);border-radius:12px;padding:10px 16px;gap:10px;align-items:center;box-shadow:rgba(0,0,0,0.4) 0px 8px 32px;">
   <span style="color:rgba(255,255,255,0.5);font-size:12px;font-family:sans-serif;">✏️ Режим редактирования</span>
-  <button onclick="saveHTML()" style="background:#1E40AF;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">💾 Сохранить</button>
-  <button onclick="toggleEditMode()" style="background:#374151;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;">✕ Выйти</button>
+  <button onclick="saveHTML()" style="background:#1E40AF;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">🚀 Опубликовать</button>
+  <button onclick="downloadHTML()" style="background:#374151;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">⬇ Скачать HTML</button>
+  <button onclick="toggleEditMode()" style="background:#1f2937;color:#9CA3AF;border:none;padding:8px 12px;border-radius:8px;font-size:13px;cursor:pointer;">✕</button>
 </div>
 
 <style>
