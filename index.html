@@ -263,7 +263,7 @@
 
 <nav>
   <div>
-    <div class="nav-logo" ondblclick="toggleEditMode()" style="cursor:default;">РОСТ</div>
+    <div class="nav-logo">РОСТ</div>
     <div class="nav-tagline">Результативность Операций, Систем и Технологий</div>
   </div>
   <a href="#" onclick="openModal(event)" class="nav-cta">Записаться на диагностику →</a>
@@ -704,7 +704,6 @@ function submitModal(e) {
 }
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
-  if (e.altKey && e.key === 'e') toggleEditMode();
   if ((e.ctrlKey || e.metaKey) && e.key === 's' && editMode) { e.preventDefault(); saveHTML(); }
 });
 
