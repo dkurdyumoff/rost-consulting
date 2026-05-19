@@ -99,9 +99,7 @@
   .prob-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .prob-card { background: #fff; border-radius: var(--r); border: 1px solid var(--border); padding: 26px; position: relative; overflow: hidden; transition: all 0.3s; }
   .prob-card:hover { transform: translateY(-4px); box-shadow: var(--sh2); }
-  .prob-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #EF4444, #F59E0B); }
-  .prob-ico { font-size: 28px; margin-bottom: 14px; }
-  .prob-title { font-size: 16px; font-weight: 800; margin-bottom: 10px; }
+  .prob-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--p), var(--accent)); }
   .prob-text { font-size: 13px; color: var(--text-2); line-height: 1.6; }
 
   /* SOLUTION */
@@ -243,14 +241,42 @@
   .modal-success h3 { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
   .modal-success p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
 
+
+  /* SCROLL PROGRESS BAR */
+  #scroll-progress { position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--p),var(--accent));width:0%;z-index:10001;pointer-events:none; }
+
+  /* NAV mobile */
+  @media (max-width: 640px) {
+    .nav-tagline { display:none; }
+    .nav-cta { font-size:11px; padding:6px 12px; white-space:nowrap; flex-shrink:0; }
+    nav { padding: 0 4%; gap: 12px; }
+    .nav-logo { font-size:17px; }
+  }
+
+  /* PROB-CARD: emoji + заголовок в одну строку */
+  .prob-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:12px; }
+  .prob-ico { font-size:24px; flex-shrink:0; line-height:1.3; margin-bottom:0; }
+  .prob-title { font-size:15px; font-weight:800; line-height:1.3; margin-bottom:0; }
+  .prob-text { font-size:13px; color:var(--text-2); line-height:1.6; }
+  /* РЕШЕНИЕ: светлый фон */
+  .sol-bg { background: var(--p-light); }
+
+  /* PROD-CARD: кнопка всегда у низа */
+  .prod-card { display:flex; flex-direction:column; }
+  .btn-prod-fill, .btn-prod-out { margin-top:auto; }
+  .prod-list { flex:1; }
+
+  /* СЕГМЕНТЫ: белый фон (убираем серый дубль) */
+  .proof-bg { background: var(--bg); }
+
   @media (max-width: 1024px) {
     .hero { grid-template-columns: 1fr; }
     .hero-visual { display: none; }
     .sol-wrap { grid-template-columns: 1fr; }
     .prob-grid, .ben-grid, .prod-grid { grid-template-columns: 1fr 1fr !important; }
-    .test-grid { grid-template-columns: 1fr; }
     .stats-row, .stats-row2 { grid-template-columns: 1fr 1fr; }
-    .seg-grid { grid-template-columns: 1fr; }
+    .seg-grid { grid-template-columns: 1fr 1fr; }
+    .prod-grid { grid-template-columns: repeat(2, 1fr) !important; }
   }
   @media (max-width: 640px) {
     section { padding: 56px 5%; }
@@ -259,7 +285,8 @@
   }
 </style>
 </head>
-<body class="">
+<body>
+<div id="scroll-progress"></div>
 
 <nav>
   <div>
@@ -386,36 +413,31 @@
       </div>
       <div style="position:absolute;top:50%;right:-14px;transform:translateY(-50%);background:var(--p);border-radius:10px;padding:7px 12px;box-shadow:0 4px 14px rgba(30,64,175,0.3);font-size:12px;font-weight:800;color:#fff;white-space:nowrap;animation:fc2a 4.5s ease-in-out infinite 0.5s;">
         900 млн ₽/год</div></div></div></section><section class="prob-bg">
-  <h2>Принципы работы РОСТ-формула&nbsp; результата<br></h2>
+  <h2>Принципы работы РОСТ-формула результата</h2>
   <p class="s-desc">Диагностика → Оцифровка потерь в рублях → Приоритизированная программа → Внедрение → Фиксация экономии.&nbsp;</p>
   <div class="prob-grid">
     <div class="prob-card">
-      <div class="prob-ico">⚙️</div>
-      <div class="prob-title">Простои снижают&nbsp; объёмы и увеличивают затраты</div>
+      <div class="prob-head"><span class="prob-ico">⚙️</span><div class="prob-title">Простои снижают объёмы и увеличивают затраты</div></div>
       <div class="prob-text">Среднестатистический завод теряет 20-40 дней календарного времени в год из-за плановых и&nbsp; внеплановых простоев , что составляет&nbsp; 8–15% от&nbsp; &nbsp;годового объёма производства, которые&nbsp; возможно получить без инвестиций в оборудование. В&nbsp; "Балтика-Carlsberg" получили&nbsp; &nbsp;+15 %, в&nbsp; "Содружестве" + 6%&nbsp; от ежегодного объема.</div>
     </div>
     <div class="prob-card">
-      <div class="prob-ico">⚡</div>
-      <div class="prob-title">Ресурсы используются нерационально в сравнении с лучшими отраслевыми практиками</div>
+      <div class="prob-head"><span class="prob-ico">⚡</span><div class="prob-title">Ресурсы используются нерационально в сравнении с отраслевыми практиками</div></div>
       <div class="prob-text">Энергия, упаковка, вспомогательные материалы и запасные части расходуются избыточно в сравнении с&nbsp; бенчмарком на 10–70%. В компании "Балтика" ( 11 заводов) снизили затраты на 11 %,&nbsp; В ГК "Содружество" (9 заводов): снизили энергозатраты на 6–19%/т, вспомогательные&nbsp; материалы&nbsp; до 70%,персонал на 10%..</div>
     </div>
     <div class="prob-card">
-      <div class="prob-ico">📋&nbsp;<span style="font-size: 16px; font-weight: 800;">ТОиР -реактивный, а должен быть проактивный&nbsp;</span></div>
+      <div class="prob-head"><span class="prob-ico">📋</span><div class="prob-title">ТОиР — реактивный, а должен быть проактивным</div></div>
       <div class="prob-text">Планово-предупредительные ремонты не охватывают все объекты ремонта или не включают полный объем&nbsp; работ по объекту ремонта. Как&nbsp; следствие -непрогнозируемые отказы&nbsp; и авральный режим работы технических служб, нехватка нужного ЗИПа и&nbsp; &nbsp;многолетние запасы&nbsp; &nbsp;невостребованных запасных частей. Персонал работает в режиме аварийного реагирования вместо планового&nbsp; обслуживания оборудования, поэтому как правило долго не задерживается в компании..&nbsp;</div>
     </div>
   </div>
 </section>
 
 <!-- 3. РЕШЕНИЕ -->
-<section>
+<section class="sol-bg">
   <div class="sol-wrap">
     <div>
       <div class="s-tag">Решение</div>
       <h2>Технический консалтинг с бизнес результатом</h2>
-      <p style="color:var(--text-2);font-size:17px;line-height:1.7;margin-bottom:0;"><span style="font-family: Arial, sans-serif; font-size: 12pt; color: rgb(15, 23, 42);">Мой подход отличается от классических консалтингов: я
-не оставляю стратегию в PowerPoint я прихожу на площадку, диагностирую
-процессы, оцифровываю потери в рублях и внедряю инструменты Lean-TPM для их
-устранения c&nbsp;</span>&nbsp;подтверждённым финансовым результатом.</p>
+      <p style="color:var(--text-2);font-size:17px;line-height:1.7;margin-bottom:0;">Мой подход отличается от классических консалтингов: не оставляю стратегию в PowerPoint — прихожу на площадку, диагностирую процессы, оцифровываю потери в рублях и внедряю инструменты Lean-TPM с подтверждённым финансовым результатом.</p>
       <div class="sol-steps">
         <div class="sol-step">
           <div class="step-num">1</div>
@@ -444,8 +466,8 @@
       <div class="rv-item"><div class="rv-num">10 дн</div><div class="rv-lbl">снижение простоев/год = +6% объёмов (ГК "Содружество"</div></div>
       <div class="rv-item"><div class="rv-num">6–19%</div><div class="rv-lbl">снижение энергозатрат на тонну продукции( ГК "Содружество"</div></div>
       <div class="rv-item"><div class="rv-num">70%</div><div class="rv-lbl">сокращение расхода вспомогательных материалов, ГК "Содружество"</div></div>
-      <div class="rv-item"><div class="rv-num">900 млн</div><div class="rv-lbl">₽/год совокупная экономия OPEX в компании "Балтика". Самые низкие затраты ТОИР&nbsp; на единицу продукции в компании "Балтика".</div><div class="rv-lbl"><br></div></div>
-      <div class="rv-item"><div class="rv-num">95%</div><div class="rv-lbl">CAPEX-проекты в срок и в бюджет в компании&nbsp; "Балтика" .8+ запущенных новых заводов.&nbsp;</div></div>
+      <div class="rv-item"><div class="rv-num">900 млн</div><div class="rv-lbl">₽/год совокупная экономия OPEX в компании "Балтика". Самые низкие затраты ТОИР на единицу продукции в компании "Балтика".</div><div class="rv-lbl"><br></div></div>
+      <div class="rv-item"><div class="rv-num">95%</div><div class="rv-lbl">CAPEX-проекты в срок и в бюджет в компании "Балтика" .8+ запущенных новых заводов.</div></div>
     </div>
   </div>
 </section>
@@ -453,18 +475,18 @@
 <!-- 4. ДОСТИЖЕНИЯ -->
 <section class="ach-bg" id="achievements">
   <div class="s-tag">Достижения</div>
-  <h2>Иван Курдюмов&nbsp; производственный директор с 24-летним опытом</h2>
+  <h2>Иван Курдюмов производственный директор с 24-летним опытом</h2>
   <p class="s-desc tc">Carlsberg (11 заводов в РФ) и ГК «Содружество» (3 производственно-логистических комплекса, 9 заводов). Реальные результаты, реальные деньги.</p>
   <div class="stats-row">
-    <div class="stat-box"><div class="stat-n">900 млн</div><div class="stat-l">₽/год —&nbsp; достигнутая экономия OPEX</div></div>
-    <div class="stat-box"><div class="stat-n">1,4 млрд</div><div class="stat-l">₽ за 3 года -Carlsberg/Балтика&nbsp;</div></div>
+    <div class="stat-box"><div class="stat-n">900 млн</div><div class="stat-l">₽/год — достигнутая экономия OPEX</div></div>
+    <div class="stat-box"><div class="stat-n">1,4 млрд</div><div class="stat-l">₽ за 3 года -Carlsberg/Балтика</div></div>
     <div class="stat-box"><div class="stat-n">1,6 млрд</div><div class="stat-l">₽/год -CAPEX-проекты, 95% в срок</div></div>
     <div class="stat-box"><div class="stat-n">2 500</div><div class="stat-l">человек -команда в прямом управлении</div></div>
   </div>
   <div class="stats-row2">
-    <div class="stat-box"><div class="stat-n">10+</div><div class="stat-l">заводов в управлении в 2х крупных холдингах&nbsp;</div></div>
-    <div class="stat-box"><div class="stat-n">200+</div><div class="stat-l">человек подготовлено для новых заводов&nbsp; в "Содружестве"</div></div>
-    <div class="stat-box"><div class="stat-n">100+</div><div class="stat-l">идей по&nbsp; улучшению/ежегодно&nbsp;</div></div>
+    <div class="stat-box"><div class="stat-n">10+</div><div class="stat-l">заводов в управлении в 2х крупных холдингах</div></div>
+    <div class="stat-box"><div class="stat-n">200+</div><div class="stat-l">человек подготовлено для новых заводов в "Содружестве"</div></div>
+    <div class="stat-box"><div class="stat-n">100+</div><div class="stat-l">идей по улучшению/ежегодно</div></div>
   </div>
   <div class="co-row">
     <div class="co-badge">Carlsberg / Балтика — 11 заводов</div>
@@ -480,7 +502,7 @@
   <div class="seg-grid">
     <div class="seg-card">
       <div class="seg-ind">FMCG</div>
-      <div class="seg-title">OEE -производственных линий&nbsp;</div>
+      <div class="seg-title">OEE -производственных линий</div>
       <div class="seg-result">−10+ дней простоев/год → +6% объёмов</div>
       <p style="font-size:13px;color:var(--text-2);margin-bottom:12px;">Опыт Carlsberg 11 заводов Восточной Европы. OEE производственных линий, автономное обслуживание, развитие навыков персонала&nbsp;</p>
       <div class="seg-offer">Экспресс-аудит OEE 1 линии — 3 дня</div>
@@ -609,7 +631,7 @@
 <section class="scar">
   <div style="max-width:620px;margin:0 auto;">
     <div style="font-size:48px;margin-bottom:16px;">⏳</div>
-    <h2>Выполняю&nbsp; до 12 проектов в год<br></h2>
+    <h2>Выполняю до 12 проектов в год</h2>
     <p>Комбинированный режим на&nbsp; заводе и удаленно. Одновременно веду не более 4 проектов. На Q2 2026 осталось <strong>2 свободных места</strong>.</p>
     <div class="scar-slots">
       <div class="slot taken">1</div>
@@ -851,4 +873,14 @@ function toggleMsg() {
 
 
 
-<div id="save-toast" style="position: fixed; bottom: 90px; right: 24px; color: rgb(255, 255, 255); padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; z-index: 10000; transition: opacity 0.4s; font-family: sans-serif; background: rgb(5, 150, 105); opacity: 0;">Опубликовано ✓ (~1 мин)</div></body></html>
+<div id="save-toast" style="position: fixed; bottom: 90px; right: 24px; color: rgb(255, 255, 255); padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; z-index: 10000; transition: opacity 0.4s; font-family: sans-serif; background: rgb(5, 150, 105); opacity: 0;">Опубликовано ✓ (~1 мин)</div>
+<script>
+window.addEventListener('scroll', function() {
+  var el = document.getElementById('scroll-progress');
+  if (!el) return;
+  var h = document.documentElement;
+  var pct = (h.scrollTop || document.body.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  el.style.width = pct + '%';
+}, { passive: true });
+</script>
+</body></html>
