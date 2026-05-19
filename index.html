@@ -721,24 +721,33 @@ function closeModalOutside(e) {
 async function submitModal(e) {
   e.preventDefault();
   const btn = e.target.querySelector('.modal-submit');
+  const form = e.target;
   btn.textContent = 'Отправляю...';
   btn.disabled = true;
+  const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000));
   try {
-    const res = await fetch('https://formsubmit.co/ajax/kurdyumov.iv@yandex.ru', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: new FormData(e.target)
-    });
+    const res = await Promise.race([
+      fetch('https://formsubmit.co/ajax/kurdyumov.iv@yandex.ru', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      }),
+      timeout
+    ]);
     if (res.ok) {
       document.getElementById('modal-form-wrap').style.display = 'none';
       document.getElementById('modal-success').style.display = 'block';
-    } else {
-      btn.textContent = 'Ошибка — попробуйте ещё раз';
-      btn.disabled = false;
-    }
+    } else throw new Error('bad response');
   } catch {
-    btn.textContent = 'Нет связи — попробуйте ещё раз';
-    btn.disabled = false;
+    // Fallback: открываем почтовый клиент
+    const name = form.querySelector('[name=name]')?.value || '';
+    const phone = form.querySelector('[name=phone]')?.value || '';
+    const company = form.querySelector('[name=company]')?.value || '';
+    const msg = form.querySelector('[name=message]')?.value || '';
+    const body = encodeURIComponent(`Имя: ${name}\nТелефон: ${phone}\nКомпания: ${company}\nСообщение: ${msg}`);
+    window.location.href = `mailto:kurdyumov.iv@yandex.ru?subject=Заявка с сайта РОСТ&body=${body}`;
+    document.getElementById('modal-form-wrap').style.display = 'none';
+    document.getElementById('modal-success').style.display = 'block';
   }
 }
 document.addEventListener('keydown', e => {
