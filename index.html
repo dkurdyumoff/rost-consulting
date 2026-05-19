@@ -718,16 +718,28 @@ function closeModal() {
 function closeModalOutside(e) {
   if (e.target === document.getElementById('modal')) closeModal();
 }
-function submitModal(e) {
+async function submitModal(e) {
   e.preventDefault();
-  const data = new FormData(e.target);
-  fetch('https://formsubmit.co/ajax/kurdymov2020@gmail.com', {
-    method: 'POST',
-    headers: { 'Accept': 'application/json' },
-    body: data
-  }).catch(() => {});
-  document.getElementById('modal-form-wrap').style.display = 'none';
-  document.getElementById('modal-success').style.display = 'block';
+  const btn = e.target.querySelector('.modal-submit');
+  btn.textContent = 'Отправляю...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('https://formsubmit.co/ajax/kurdymov2020@gmail.com', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(e.target)
+    });
+    if (res.ok) {
+      document.getElementById('modal-form-wrap').style.display = 'none';
+      document.getElementById('modal-success').style.display = 'block';
+    } else {
+      btn.textContent = 'Ошибка — попробуйте ещё раз';
+      btn.disabled = false;
+    }
+  } catch {
+    btn.textContent = 'Нет связи — попробуйте ещё раз';
+    btn.disabled = false;
+  }
 }
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
