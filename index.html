@@ -731,143 +731,17 @@ function submitModal(e) {
 }
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
-  if ((e.ctrlKey || e.metaKey) && e.key === 's' && editMode) { e.preventDefault(); saveHTML(); }
 });
 
-/* ── EDIT MODE ── */
-let editMode = false;
-let ghToken = new URLSearchParams(location.search).get('token') || '';
-const SKIP_IDS = ['edit-toolbar','edit-trigger','modal','msg-float','site-footer'];
-const SKIP_TAGS = new Set(['SCRIPT','STYLE','NOSCRIPT','META','LINK','IMG','INPUT','BUTTON','SELECT','TEXTAREA','SVG','PATH','RECT','CIRCLE','ELLIPSE','POLYLINE','POLYGON','LINE','DEFS','G','USE','ANIMATE','NAV','FOOTER']);
-const BLOCK_TAGS = new Set(['DIV','P','H1','H2','H3','H4','H5','H6','UL','OL','LI','BLOCKQUOTE','SECTION','ARTICLE','HEADER','MAIN','ASIDE','TABLE','TR','TD','TH','FORM','FIGURE']);
-if (new URLSearchParams(location.search).get('edit') === '1') {
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('edit-trigger').style.display = 'flex';
-  });
-}
-
-function getEditables() {
-  const result = [];
-  document.querySelectorAll('*').forEach(el => {
-    if (SKIP_TAGS.has(el.tagName)) return;
-    if (SKIP_IDS.some(id => el.closest('#'+id))) return;
-    if (!el.textContent.trim()) return;
-    for (const child of el.children) {
-      if (BLOCK_TAGS.has(child.tagName)) return;
-    }
-    result.push(el);
-  });
-  // Remove elements whose parent is also editable (prefer editing parent)
-  const set = new Set(result);
-  return result.filter(el => !set.has(el.parentElement));
-}
-
-function toggleEditMode() {
-  editMode = !editMode;
-  const toolbar = document.getElementById('edit-toolbar');
-  const trigger = document.getElementById('edit-trigger');
-  toolbar.style.display = editMode ? 'flex' : 'none';
-  trigger.style.display = editMode ? 'none' : 'flex';
-  document.body.classList.toggle('edit-active', editMode);
-  getEditables().forEach(el => { el.contentEditable = editMode ? 'true' : 'false'; });
-}
-
-function getCleanHTML() {
-  getEditables().forEach(el => el.removeAttribute('contenteditable'));
-  document.body.classList.remove('edit-active');
-  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-  document.body.classList.add('edit-active');
-  if (editMode) getEditables().forEach(el => { el.contentEditable = 'true'; });
-  return html;
-}
-
-function downloadHTML() {
-  const html = getCleanHTML();
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
-  a.download = 'index.html';
-  a.click();
-  showSaveToast('Файл скачан ✓');
-}
-
-async function saveHTML() {
-  const html = getCleanHTML();
-  if (!ghToken) { downloadHTML(); return; }
-  showSaveToast('Публикую...');
-  try {
-    const api = 'https://api.github.com/repos/dkurdyumoff/rost-consulting/contents/index.html';
-    const fileRes = await fetch(api, { headers: { Authorization: 'Bearer ' + ghToken } });
-    const fileData = await fileRes.json();
-    const content = btoa(unescape(encodeURIComponent(html)));
-    const res = await fetch(api, {
-      method: 'PUT',
-      headers: { Authorization: 'Bearer ' + ghToken, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Update from editor', content, sha: fileData.sha })
-    });
-    if (res.ok) showSaveToast('Опубликовано ✓ (~1 мин)');
-    else showSaveToast('Ошибка: ' + (await res.json()).message, '#DC2626');
-  } catch(e) { showSaveToast('Ошибка: ' + e.message, '#DC2626'); }
-}
-
-function showSaveToast(msg, color) {
-  let t = document.getElementById('save-toast');
-  if (!t) {
-    t = document.createElement('div');
-    t.id = 'save-toast';
-    t.style.cssText = 'position:fixed;bottom:90px;right:24px;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;z-index:10000;transition:opacity 0.4s;font-family:sans-serif;';
-    document.body.appendChild(t);
-  }
-  t.style.background = color || '#059669';
-  t.textContent = msg;
-  t.style.opacity = '1';
-  clearTimeout(t._timer);
-  if (msg !== 'Публикую...') t._timer = setTimeout(() => t.style.opacity = '0', 3000);
-}
-</script>
-
-<!-- MESSENGER FLOAT -->
-<div id="msg-float" style="position:fixed;bottom:28px;left:24px;z-index:998;display:flex;flex-direction:column;align-items:flex-start;gap:10px;">
-  <div id="msg-btns" style="display:none;flex-direction:column;gap:8px;margin-bottom:4px;">
-    <a href="https://wa.me/79622676163" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(37,211,102,0.35);white-space:nowrap;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
-      WhatsApp
-    </a>
-    <a href="https://t.me/+79622676163" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;background:#229ED9;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(34,158,217,0.35);white-space:nowrap;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"></path></svg>
-      Telegram
-    </a>
-    <a href="tel:+79622676163" style="display:flex;align-items:center;gap:10px;background:#059669;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(5,150,105,0.35);white-space:nowrap;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>
-      Позвонить
-    </a>
-  </div>
-  <button onclick="toggleMsg()" id="msg-toggle" style="width:52px;height:52px;border-radius:50%;background:var(--p);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(30,64,175,0.4);display:flex;align-items:center;justify-content:center;transition:all 0.2s;">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-  </button>
-</div>
-
-<script>
 function toggleMsg() {
   const btns = document.getElementById('msg-btns');
   btns.style.display = btns.style.display === 'none' ? 'flex' : 'none';
 }
 </script>
 
-<!-- EDIT TRIGGER BUTTON -->
-<button id="edit-trigger" onclick="toggleEditMode()" title="Режим редактирования" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; width: 44px; height: 44px; border-radius: 50%; background: rgb(15, 23, 42); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; cursor: pointer; box-shadow: rgba(0, 0, 0, 0.35) 0px 4px 16px; display: none; align-items: center; justify-content: center; font-size: 18px; opacity: 0.4; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.4'">✏️</button>
 
-<!-- EDIT TOOLBAR -->
-<div id="edit-toolbar" style="display: flex; position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: rgb(15, 23, 42); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 32px;">
-  <span style="color:rgba(255,255,255,0.5);font-size:12px;font-family:sans-serif;">✏️ Режим редактирования</span>
-  <button onclick="saveHTML()" style="background:#1E40AF;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">🚀 Опубликовать</button>
-  <button onclick="downloadHTML()" style="background:#374151;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">⬇ Скачать HTML</button>
-  <button onclick="toggleEditMode()" style="background:#1f2937;color:#9CA3AF;border:none;padding:8px 12px;border-radius:8px;font-size:13px;cursor:pointer;">✕</button>
-</div>
 
-<style>
-  .edit-active [contenteditable="true"]:hover { outline: 2px dashed #0EA5E9; outline-offset: 2px; border-radius: 3px; cursor: text; }
-  .edit-active [contenteditable="true"]:focus { outline: 2px solid #1E40AF; outline-offset: 2px; border-radius: 3px; }
-</style>
+
 
 <footer id="site-footer">© 2026 РОСТ — Результативность Операций, Систем и Технологий · Иван Курдюмов · ivan@rost-consulting.ru · Технический консалтинг для промышленных предприятий</footer>
 
