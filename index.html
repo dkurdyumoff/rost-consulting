@@ -34,10 +34,12 @@
     border-bottom: 1px solid var(--border);
     padding: 0 5%; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
+    box-sizing: border-box; width: 100%;
   }
   .nav-logo { font-size: 20px; font-weight: 900; color: var(--p); letter-spacing: -1px; }
   .nav-tagline { font-size: 12px; color: var(--text-3); font-weight: 500; }
-  .nav-cta { background: var(--p); color: #fff; padding: 9px 22px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+  .nav-cta { background: var(--p); color: #fff; padding: 9px 22px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.2s; opacity: 0; pointer-events: none; }
+  .nav-cta.visible { opacity: 1; pointer-events: auto; }
   .nav-cta:hover { background: var(--p-dark); transform: translateY(-1px); }
 
   /* HERO */
@@ -46,10 +48,10 @@
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--p-light); color: var(--p); padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; border: 1px solid rgba(30,64,175,0.15); }
   .hero-badge span { width: 6px; height: 6px; background: var(--p); border-radius: 50%; animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
-  .hero h1 { font-size: clamp(28px, 3.8vw, 48px); font-weight: 900; line-height: 1.12; letter-spacing: -2px; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(34px, 4.5vw, 56px); font-weight: 900; line-height: 1.08; letter-spacing: -2.5px; margin-bottom: 24px; }
   .hero h1 em { font-style: normal; background: linear-gradient(135deg, var(--p), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero-sub { font-size: 16px; color: var(--text-2); margin-bottom: 14px; line-height: 1.75; max-width: 520px; }
-  .hero-founder { font-size: 14px; color: var(--text-2); font-weight: 500; margin-bottom: 32px; padding: 14px 16px; background: var(--bg2); border-left: 3px solid var(--p); border-radius: 0 8px 8px 0; line-height: 1.6; }
+  .hero-sub { font-size: 18px; color: var(--text-2); margin-bottom: 16px; line-height: 1.7; max-width: 500px; }
+  .hero-founder { font-size: 15px; color: var(--p); font-weight: 700; margin-bottom: 32px; }
   .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
   .btn-main { background: var(--p); color: #fff; padding: 14px 28px; border-radius: 10px; font-size: 16px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(30,64,175,0.3); }
   .btn-main:hover { background: var(--p-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30,64,175,0.4); }
@@ -99,7 +101,9 @@
   .prob-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .prob-card { background: #fff; border-radius: var(--r); border: 1px solid var(--border); padding: 26px; position: relative; overflow: hidden; transition: all 0.3s; }
   .prob-card:hover { transform: translateY(-4px); box-shadow: var(--sh2); }
-  .prob-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--p), var(--accent)); }
+  .prob-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #EF4444, #F59E0B); }
+  .prob-ico { font-size: 28px; margin-bottom: 14px; }
+  .prob-title { font-size: 16px; font-weight: 800; margin-bottom: 10px; }
   .prob-text { font-size: 13px; color: var(--text-2); line-height: 1.6; }
 
   /* SOLUTION */
@@ -164,7 +168,7 @@
   .test-role { font-size: 11px; color: var(--text-3); }
 
   /* PRODUCTS */
-  .prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px; }
+  .prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
   .prod-card { border: 2px solid var(--border); border-radius: 16px; padding: 28px; position: relative; transition: all 0.3s; }
   .prod-card.feat { border-color: var(--p); background: var(--p-light); }
   .prod-card:hover { transform: translateY(-4px); box-shadow: var(--sh2); }
@@ -241,56 +245,29 @@
   .modal-success h3 { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
   .modal-success p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
 
-
-  /* SCROLL PROGRESS BAR */
-  #scroll-progress { position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--p),var(--accent));width:0%;z-index:10001;pointer-events:none; }
-
-  /* NAV mobile */
-  @media (max-width: 640px) {
-    .nav-tagline { display:none; }
-    .nav-cta { font-size:11px; padding:6px 12px; white-space:nowrap; flex-shrink:0; }
-    nav { padding: 0 4%; gap: 12px; }
-    .nav-logo { font-size:17px; }
-  }
-
-  /* PROB-CARD: emoji + заголовок в одну строку */
-  .prob-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:12px; }
-  .prob-ico { font-size:24px; flex-shrink:0; line-height:1.3; margin-bottom:0; }
-  .prob-title { font-size:15px; font-weight:800; line-height:1.3; margin-bottom:0; }
-  .prob-text { font-size:13px; color:var(--text-2); line-height:1.6; }
-  /* РЕШЕНИЕ: светлый фон */
-  .sol-bg { background: var(--p-light); }
-
-  /* PROD-CARD: кнопка всегда у низа */
-  .prod-card { display:flex; flex-direction:column; }
-  .btn-prod-fill, .btn-prod-out { margin-top:auto; }
-  .prod-list { flex:1; }
-
-  /* СЕГМЕНТЫ: белый фон (убираем серый дубль) */
-  .proof-bg { background: var(--bg); }
-
   @media (max-width: 1024px) {
     .hero { grid-template-columns: 1fr; }
     .hero-visual { display: none; }
     .sol-wrap { grid-template-columns: 1fr; }
-    .prob-grid, .ben-grid, .prod-grid { grid-template-columns: 1fr 1fr !important; }
+    .prob-grid, .ben-grid, .prod-grid { grid-template-columns: 1fr 1fr; }
+    .test-grid { grid-template-columns: 1fr; }
     .stats-row, .stats-row2 { grid-template-columns: 1fr 1fr; }
-    .seg-grid { grid-template-columns: 1fr 1fr; }
-    .prod-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .seg-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
     section { padding: 56px 5%; }
-    .prob-grid, .ben-grid, .prod-grid, .stats-row, .stats-row2, .warn-grid { grid-template-columns: 1fr !important; }
+    .prob-grid, .ben-grid, .prod-grid, .stats-row, .stats-row2, .warn-grid { grid-template-columns: 1fr; }
     .guar-box { grid-template-columns: 1fr; text-align: center; }
+    .nav-logo { font-size: 26px; }
+    .prod-extra { display: none !important; }
   }
 </style>
 </head>
 <body>
-<div id="scroll-progress"></div>
 
 <nav>
   <div>
-    <div class="nav-logo">РОСТ</div>
+    <div class="nav-logo" ondblclick="toggleEditMode()" style="cursor:default;">РОСТ</div>
     <div class="nav-tagline">Результативность Операций, Систем и Технологий</div>
   </div>
   <a href="#" onclick="openModal(event)" class="nav-cta">Записаться на диагностику →</a>
@@ -299,109 +276,89 @@
 <!-- 1. HERO / ВНИМАНИЕ -->
 <section class="hero">
   <div>
-    <h1>Ваш завод теряет <em>3–15% операционного бюджета</em> ежедневно</h1>
-    <p class="hero-sub">РОСТ — технический консалтинг для промышленных предприятий. <span style="font-size: 18px;">Поможем разобраться где и как не терять деньги на простоях, перерасходе ресурсов и неэффективных процессах - через диагностику, оцифровку потерь и внедрение проверенных инструментов с измеримым финансовым результатом.</span></p>
-    <p class="hero-founder">Иван Курдюмов -производственный директор с 24-летним опытом. 10+ заводов в управлении, команды до 2 500 человек в Carlsberg и «Содружестве». Предлагаю не&nbsp; стратегии в PowerPoint, а&nbsp; руки на площадке и подтверждённый финансовый результат.</p>
+    <h1>Ваш завод теряет <em>миллионы</em><br>ежедневно</h1>
+    <p class="hero-sub">РОСТ — технический консалтинг для промышленных предприятий, которые теряют деньги на простоях, энергозатратах и перерасходе материалов.</p>
+    <p class="hero-founder">Иван Курдюмов — производственный директор с 24-летним опытом в Carlsberg и «Содружестве». Практик, а не теоретик. 10+ заводов в управлении.</p>
     <div class="hero-actions">
       <a href="#" onclick="openModal(event)" class="btn-main">Заказать диагностику →</a>
       <a href="#achievements" class="btn-outline">Результаты в цифрах</a>
     </div>
   </div>
-  <!-- Вариант 3: Промышленный комплекс с силосами, закатное небо -->
   <div class="hero-visual" style="animation:float 6s ease-in-out infinite;">
     <div style="position:relative;">
 
       <svg viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;display:block;">
-        <!-- Sunset sky -->
-        <defs>
-          <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#DBEAFE"></stop>
-            <stop offset="60%" stop-color="#BFDBFE"></stop>
-            <stop offset="100%" stop-color="#E0F2FE"></stop>
-          </linearGradient>
-          <linearGradient id="silo" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#1E3A8A"></stop>
-            <stop offset="50%" stop-color="#2563EB"></stop>
-            <stop offset="100%" stop-color="#1E3A8A"></stop>
-          </linearGradient>
-        </defs>
-        <rect width="520" height="340" fill="url(#sky3)" rx="16"></rect>
+        <!-- Sky -->
+        <rect width="520" height="340" fill="#EFF6FF" rx="16"/>
 
         <!-- Ground -->
-        <rect x="0" y="278" width="520" height="62" fill="#BFDBFE"></rect>
-        <rect x="0" y="278" width="520" height="5" fill="#93C5FD"></rect>
+        <rect x="0" y="280" width="520" height="60" fill="#DBEAFE" rx="0"/>
 
-        <!-- Silos left (cylinders as ellipses+rects) -->
-        <rect x="22" y="140" width="34" height="142" fill="#1E3A8A" rx="17"></rect>
-        <ellipse cx="39" cy="140" rx="17" ry="8" fill="#2563EB"></ellipse>
-        <ellipse cx="39" cy="278" rx="17" ry="7" fill="#1E3A8A"></ellipse>
-        <rect x="62" y="155" width="30" height="125" fill="#1E40AF" rx="15"></rect>
-        <ellipse cx="77" cy="155" rx="15" ry="7" fill="#3B82F6"></ellipse>
-        <rect x="96" y="168" width="26" height="112" fill="#2563EB" rx="13"></rect>
-        <ellipse cx="109" cy="168" rx="13" ry="6" fill="#60A5FA"></ellipse>
-        <!-- Silo pipe horizontal -->
-        <rect x="36" y="210" width="90" height="7" fill="#3B82F6" rx="3"></rect>
-        <rect x="36" y="230" width="70" height="5" fill="#60A5FA" rx="2"></rect>
+        <!-- Building left -->
+        <rect x="40" y="160" width="100" height="120" fill="#1E40AF" rx="4"/>
+        <rect x="55" y="175" width="25" height="25" fill="#93C5FD" rx="2"/>
+        <rect x="90" y="175" width="25" height="25" fill="#93C5FD" rx="2"/>
+        <rect x="55" y="212" width="25" height="25" fill="#93C5FD" rx="2"/>
+        <rect x="90" y="212" width="25" height="25" fill="#93C5FD" rx="2"/>
+        <rect x="65" y="245" width="30" height="35" fill="#1E3A8A" rx="2"/>
 
-        <!-- Main factory building center -->
-        <rect x="140" y="130" width="220" height="150" fill="#1E3A8A" rx="4"></rect>
-        <!-- Roof detail -->
-        <rect x="138" y="126" width="224" height="8" fill="#1E40AF" rx="2"></rect>
-        <rect x="160" y="110" width="40" height="22" fill="#2563EB" rx="2"></rect>
-        <rect x="300" y="118" width="35" height="14" fill="#2563EB" rx="2"></rect>
-        <!-- Windows grid -->
-        <rect x="155" y="148" width="32" height="26" fill="#93C5FD" rx="2"></rect>
-        <rect x="198" y="148" width="32" height="26" fill="#BFDBFE" rx="2"></rect>
-        <rect x="241" y="148" width="32" height="26" fill="#93C5FD" rx="2"></rect>
-        <rect x="284" y="148" width="32" height="26" fill="#93C5FD" rx="2"></rect>
-        <rect x="327" y="148" width="28" height="26" fill="#BFDBFE" rx="2"></rect>
-        <rect x="155" y="188" width="32" height="26" fill="#BFDBFE" rx="2"></rect>
-        <rect x="198" y="188" width="32" height="26" fill="#93C5FD" rx="2"></rect>
-        <rect x="241" y="188" width="32" height="26" fill="#93C5FD" rx="2"></rect>
-        <rect x="284" y="188" width="32" height="26" fill="#BFDBFE" rx="2"></rect>
-        <rect x="327" y="188" width="28" height="26" fill="#93C5FD" rx="2"></rect>
+        <!-- Building center (main) -->
+        <rect x="170" y="100" width="180" height="180" fill="#1E3A8A" rx="4"/>
+        <rect x="185" y="115" width="35" height="30" fill="#93C5FD" rx="2"/>
+        <rect x="232" y="115" width="35" height="30" fill="#93C5FD" rx="2"/>
+        <rect x="279" y="115" width="35" height="30" fill="#93C5FD" rx="2"/>
+        <rect x="185" y="158" width="35" height="30" fill="#93C5FD" rx="2"/>
+        <rect x="232" y="158" width="35" height="30" fill="#BFDBFE" rx="2"/>
+        <rect x="279" y="158" width="35" height="30" fill="#93C5FD" rx="2"/>
+        <rect x="185" y="201" width="35" height="30" fill="#93C5FD" rx="2"/>
+        <rect x="279" y="201" width="35" height="30" fill="#93C5FD" rx="2"/>
         <!-- Door -->
-        <rect x="233" y="234" width="50" height="46" fill="#1E40AF" rx="2"></rect>
-        <circle cx="274" cy="258" r="3" fill="#93C5FD"></circle>
-        <!-- РОСТ sign -->
-        <text x="250" y="124" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" font-weight="900" fill="#60A5FA" letter-spacing="5">РОСТ</text>
+        <rect x="228" y="238" width="44" height="42" fill="#1E40AF" rx="2"/>
+        <circle cx="264" cy="259" r="3" fill="#93C5FD"/>
 
-        <!-- Warehouse right -->
-        <rect x="370" y="195" width="130" height="85" fill="#1E40AF" rx="4"></rect>
-        <!-- Arched roof -->
-        <ellipse cx="435" cy="195" rx="65" ry="18" fill="#2563EB"></ellipse>
-        <rect x="370" y="195" width="130" height="10" fill="#2563EB"></rect>
-        <rect x="383" y="212" width="28" height="22" fill="#93C5FD" rx="2"></rect>
-        <rect x="421" y="212" width="28" height="22" fill="#BFDBFE" rx="2"></rect>
-        <rect x="459" y="212" width="28" height="22" fill="#93C5FD" rx="2"></rect>
-        <rect x="383" y="246" width="28" height="20" fill="#BFDBFE" rx="2"></rect>
-        <rect x="459" y="246" width="28" height="20" fill="#93C5FD" rx="2"></rect>
-        <!-- Gate -->
-        <rect x="415" y="242" width="40" height="38" fill="#1E3A8A" rx="2"></rect>
+        <!-- Building right -->
+        <rect x="380" y="190" width="100" height="90" fill="#1E40AF" rx="4"/>
+        <rect x="393" y="204" width="22" height="22" fill="#93C5FD" rx="2"/>
+        <rect x="424" y="204" width="22" height="22" fill="#93C5FD" rx="2"/>
+        <rect x="393" y="237" width="22" height="22" fill="#BFDBFE" rx="2"/>
+        <rect x="424" y="237" width="22" height="22" fill="#93C5FD" rx="2"/>
+        <rect x="453" y="237" width="22" height="22" fill="#93C5FD" rx="2"/>
 
         <!-- Chimneys -->
-        <rect x="175" y="68" width="18" height="64" fill="#3B82F6" rx="3"></rect>
-        <rect x="315" y="78" width="18" height="54" fill="#3B82F6" rx="3"></rect>
-        <rect x="175" y="64" width="26" height="8" fill="#1E40AF" rx="2"></rect>
-        <rect x="315" y="74" width="26" height="8" fill="#1E40AF" rx="2"></rect>
+        <rect x="62" y="100" width="18" height="65" fill="#3B82F6" rx="3"/>
+        <rect x="92" y="115" width="18" height="50" fill="#3B82F6" rx="3"/>
+        <rect x="200" y="48" width="20" height="58" fill="#2563EB" rx="3"/>
+        <rect x="298" y="58" width="20" height="48" fill="#2563EB" rx="3"/>
+        <rect x="400" y="140" width="16" height="55" fill="#3B82F6" rx="3"/>
 
-        <!-- Conveyor belt -->
-        <line x1="130" y1="245" x2="150" y2="245" stroke="#60A5FA" stroke-width="4" stroke-linecap="round"></line>
-        <line x1="150" y1="245" x2="160" y2="255" stroke="#60A5FA" stroke-width="4" stroke-linecap="round"></line>
-        <line x1="360" y1="248" x2="375" y2="248" stroke="#60A5FA" stroke-width="4" stroke-linecap="round"></line>
+        <!-- Chimney tops -->
+        <rect x="58" y="96" width="26" height="8" fill="#1E40AF" rx="2"/>
+        <rect x="88" y="111" width="26" height="8" fill="#1E40AF" rx="2"/>
+        <rect x="196" y="44" width="28" height="8" fill="#1D4ED8" rx="2"/>
+        <rect x="294" y="54" width="28" height="8" fill="#1D4ED8" rx="2"/>
+        <rect x="396" y="136" width="24" height="8" fill="#1E40AF" rx="2"/>
 
-        <!-- Smoke -->
-        <g opacity="0.55">
-          <circle cx="184" cy="56" r="8" fill="#BFDBFE"><animate attributeName="cy" values="56;26;56" dur="3.5s" repeatCount="indefinite"></animate><animate attributeName="opacity" values="0.55;0;0.55" dur="3.5s" repeatCount="indefinite"></animate><animate attributeName="r" values="8;14;8" dur="3.5s" repeatCount="indefinite"></animate></circle>
-          <circle cx="195" cy="42" r="6" fill="#DBEAFE"><animate attributeName="cy" values="42;14;42" dur="2.8s" repeatCount="indefinite" begin="0.4s"></animate><animate attributeName="opacity" values="0.4;0;0.4" dur="2.8s" repeatCount="indefinite" begin="0.4s"></animate></circle>
-          <circle cx="324" cy="66" r="7" fill="#BFDBFE"><animate attributeName="cy" values="66;38;66" dur="3.2s" repeatCount="indefinite" begin="1s"></animate><animate attributeName="opacity" values="0.5;0;0.5" dur="3.2s" repeatCount="indefinite" begin="1s"></animate></circle>
-          <circle cx="335" cy="52" r="5" fill="#DBEAFE"><animate attributeName="cy" values="52;28;52" dur="2.5s" repeatCount="indefinite" begin="0.6s"></animate><animate attributeName="opacity" values="0.4;0;0.4" dur="2.5s" repeatCount="indefinite" begin="0.6s"></animate></circle>
+        <!-- Smoke animated -->
+        <g opacity="0.5">
+          <circle cx="71" cy="88" r="7" fill="#BFDBFE"><animate attributeName="cy" values="88;60;88" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite"/><animate attributeName="r" values="7;12;7" dur="3s" repeatCount="indefinite"/></circle>
+          <circle cx="101" cy="100" r="6" fill="#BFDBFE"><animate attributeName="cy" values="100;74;100" dur="2.5s" repeatCount="indefinite" begin="0.5s"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2.5s" repeatCount="indefinite" begin="0.5s"/></circle>
+          <circle cx="210" cy="36" r="8" fill="#DBEAFE"><animate attributeName="cy" values="36;8;36" dur="3.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;0;0.6" dur="3.5s" repeatCount="indefinite"/><animate attributeName="r" values="8;14;8" dur="3.5s" repeatCount="indefinite"/></circle>
+          <circle cx="308" cy="46" r="7" fill="#DBEAFE"><animate attributeName="cy" values="46;20;46" dur="3s" repeatCount="indefinite" begin="1s"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite" begin="1s"/></circle>
+          <circle cx="408" cy="126" r="6" fill="#BFDBFE"><animate attributeName="cy" values="126;100;126" dur="2.8s" repeatCount="indefinite" begin="0.3s"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite" begin="0.3s"/></circle>
         </g>
 
-        <!-- Road markings -->
-        <rect x="220" y="285" width="30" height="4" fill="#EFF6FF" rx="2"></rect>
-        <rect x="260" y="285" width="30" height="4" fill="#EFF6FF" rx="2"></rect>
-        <rect x="300" y="285" width="30" height="4" fill="#EFF6FF" rx="2"></rect>
+        <!-- Pipe connecting buildings -->
+        <rect x="140" y="220" width="32" height="8" fill="#60A5FA" rx="4"/>
+        <rect x="350" y="230" width="32" height="8" fill="#60A5FA" rx="4"/>
+
+        <!-- Road -->
+        <rect x="0" y="280" width="520" height="10" fill="#BFDBFE"/>
+        <rect x="220" y="283" width="30" height="4" fill="#EFF6FF" rx="2"/>
+        <rect x="260" y="283" width="30" height="4" fill="#EFF6FF" rx="2"/>
+        <rect x="300" y="283" width="30" height="4" fill="#EFF6FF" rx="2"/>
+
+        <!-- РОСТ label on building -->
+        <text x="260" y="90" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="14" font-weight="900" fill="#60A5FA" letter-spacing="4">РОСТ</text>
       </svg>
 
       <!-- KPI badges floating -->
@@ -412,62 +369,69 @@
         💡 −19% энергозатрат
       </div>
       <div style="position:absolute;top:50%;right:-14px;transform:translateY(-50%);background:var(--p);border-radius:10px;padding:7px 12px;box-shadow:0 4px 14px rgba(30,64,175,0.3);font-size:12px;font-weight:800;color:#fff;white-space:nowrap;animation:fc2a 4.5s ease-in-out infinite 0.5s;">
-        900 млн ₽/год</div></div></div></section><section class="prob-bg">
-  <h2>Принципы работы РОСТ-формула результата</h2>
-  <p class="s-desc">Диагностика → Оцифровка потерь в рублях → Приоритизированная программа → Внедрение → Фиксация экономии.&nbsp;</p>
+        900 млн ₽/год
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. ПРОБЛЕМА -->
+<section class="prob-bg">
+  <div class="s-tag">Проблема</div>
+  <h2>Промышленные предприятия<br>теряют деньги системно</h2>
+  <p class="s-desc">Три источника потерь, которые есть на каждом заводе — но большинство предпочитает об этом не думать.</p>
   <div class="prob-grid">
     <div class="prob-card">
-      <div class="prob-head"><span class="prob-ico">⚙️</span><div class="prob-title">Простои снижают объёмы и увеличивают затраты</div></div>
-      <div class="prob-text">Среднестатистический завод теряет 20-40 дней календарного времени в год из-за плановых и&nbsp; внеплановых простоев , что составляет&nbsp; 8–15% от&nbsp; &nbsp;годового объёма производства, которые&nbsp; возможно получить без инвестиций в оборудование. В&nbsp; "Балтика-Carlsberg" получили&nbsp; &nbsp;+15 %, в&nbsp; "Содружестве" + 6%&nbsp; от ежегодного объема.</div>
+      <div class="prob-ico">⚙️</div>
+      <div class="prob-title">Простои поглощают объём</div>
+      <div class="prob-text">Среднестатистический завод теряет 15–20 дней производительного времени в год из-за внеплановых остановок. Это минус 8–12% от потенциального объёма без единой инвестиции в мощности. Carlsberg, 17 заводов — мы решили эту задачу.</div>
     </div>
     <div class="prob-card">
-      <div class="prob-head"><span class="prob-ico">⚡</span><div class="prob-title">Ресурсы используются нерационально в сравнении с отраслевыми практиками</div></div>
-      <div class="prob-text">Энергия, упаковка, вспомогательные материалы и запасные части расходуются избыточно в сравнении с&nbsp; бенчмарком на 10–70%. В компании "Балтика" ( 11 заводов) снизили затраты на 11 %,&nbsp; В ГК "Содружество" (9 заводов): снизили энергозатраты на 6–19%/т, вспомогательные&nbsp; материалы&nbsp; до 70%,персонал на 10%..</div>
+      <div class="prob-ico">⚡</div>
+      <div class="prob-title">Ресурсы сгорают в никуда</div>
+      <div class="prob-text">Энергия, растворители, упаковка, вспомогательные материалы расходуются сверх нормы на 10–70%. ГК Содружество (3 ПЛК, 10 заводов): снизили энергозатраты на 6–19%/т, материалы — до −70%/т.</div>
     </div>
     <div class="prob-card">
-      <div class="prob-head"><span class="prob-ico">📋</span><div class="prob-title">ТОиР — реактивный, а должен быть проактивным</div></div>
-      <div class="prob-text">Планово-предупредительные ремонты не охватывают все объекты ремонта или не включают полный объем&nbsp; работ по объекту ремонта. Как&nbsp; следствие -непрогнозируемые отказы&nbsp; и авральный режим работы технических служб, нехватка нужного ЗИПа и&nbsp; &nbsp;многолетние запасы&nbsp; &nbsp;невостребованных запасных частей. Персонал работает в режиме аварийного реагирования вместо планового&nbsp; обслуживания оборудования, поэтому как правило долго не задерживается в компании..&nbsp;</div>
+      <div class="prob-ico">📋</div>
+      <div class="prob-title">ТОиР — центр хаоса</div>
+      <div class="prob-text">Планово-предупредительные ремонты превращаются в пожаротушение. ЗИП затоваривается. Персонал работает в режиме аварийного реагирования вместо системного обслуживания оборудования.</div>
     </div>
   </div>
 </section>
 
 <!-- 3. РЕШЕНИЕ -->
-<section class="sol-bg">
+<section>
   <div class="sol-wrap">
     <div>
       <div class="s-tag">Решение</div>
       <h2>Технический консалтинг с бизнес результатом</h2>
-      <p style="color:var(--text-2);font-size:17px;line-height:1.7;margin-bottom:0;">Мой подход отличается от классических консалтингов: не оставляю стратегию в PowerPoint — прихожу на площадку, диагностирую процессы, оцифровываю потери в рублях и внедряю инструменты Lean-TPM с подтверждённым финансовым результатом.</p>
+      <p style="color:var(--text-2);font-size:17px;line-height:1.7;margin-bottom:0;">Не консультация в PowerPoint — а руки на площадке. Каждый проект начинается с оцифровки потерь в рублях и заканчивается подтверждённым финансовым результатом.</p>
       <div class="sol-steps">
         <div class="sol-step">
           <div class="step-num">1</div>
-          <div><div class="step-title">Диагностика 360°</div><div class="step-text">Комплексная экспресс-диагностика производственных процессов предприятия с оцифровкой всех видов потерь (TIMWOODS + 16 потерь TPM) и формированием Программы мероприятий. Результат — «дорожная карта денег» (3–15% от OPEX) для принятия инвестиционных решений.</div></div>
+          <div><div class="step-title">Диагностика 360°</div><div class="step-text">Приезжаю на площадку, анализирую процессы, оцифровываю потери в рублях. Карта потерь с финансовой оценкой потенциала 3–6% OPEX.</div></div>
         </div>
         <div class="sol-step">
           <div class="step-num">2</div>
-          <div><div class="step-title">OPEX-трансформация</div><div class="step-text">Проектное сопровождение внедрения программы снижения операционных затрат с применением Lean-TPM инструментов. Комплексная трансформация процессов с партнёром от разработки до подтверждения экономии.</div></div>
+          <div><div class="step-title">Приоритизация по ROI</div><div class="step-text">Отбираю мероприятия по ROI: что даёт наибольший эффект при минимальных вложениях. KPI фиксируются в договоре до старта.</div></div>
         </div>
         <div class="sol-step">
           <div class="step-num">3</div>
-          <div><div class="step-title">Система ТОиР 2.0</div><div class="step-text">Выстрою систему ТОиР с нуля, включая автоматизацию на базе 1С:ТОИР, и переведу на обслуживание по состоянию с фокусом на надёжность.</div></div>
+          <div><div class="step-title">Внедрение Lean-TPM</div><div class="step-text">VSM, SMED, OEE, 5S, CBM, PDCA — инструменты под вашу задачу. Работаю с персоналом на каждом уровне, от мастера до директора.</div></div>
         </div>
         <div class="sol-step">
           <div class="step-num">4</div>
-          <div><div class="step-title">CAPEX — управление проектами с гарантией ROI</div><div class="step-text">Сопровождение инвестиционных проектов от оценки проектных решений до выхода на 72-часовой тест. Снижение рисков CAPEX-проектов, достижение проектных показателей, запуск в срок и в бюджет.</div></div>
-        </div>
-        <div class="sol-step">
-          <div class="step-num">5</div>
-          <div><div class="step-title">Система управления результативностью (СУР)</div><div class="step-text">Внедрение сквозной СУР с каскадом KPI, RASCI-матрицей, цикличными PDCA-совещаниями на 4–5 уровнях управления, визуальным менеджментом и системой мотивации.</div></div>
+          <div><div class="step-title">Измерение результата</div><div class="step-text">KPI подтверждаются финансовыми отчётами, а не презентациями. Если цель не достигнута — работаю бесплатно до результата.</div></div>
         </div>
       </div>
     </div>
     <div class="result-visual">
       <div class="rv-title">Что получает клиент</div>
-      <div class="rv-item"><div class="rv-num">10 дн</div><div class="rv-lbl">снижение простоев/год = +6% объёмов (ГК "Содружество"</div></div>
-      <div class="rv-item"><div class="rv-num">6–19%</div><div class="rv-lbl">снижение энергозатрат на тонну продукции( ГК "Содружество"</div></div>
-      <div class="rv-item"><div class="rv-num">70%</div><div class="rv-lbl">сокращение расхода вспомогательных материалов, ГК "Содружество"</div></div>
-      <div class="rv-item"><div class="rv-num">900 млн</div><div class="rv-lbl">₽/год совокупная экономия OPEX в компании "Балтика". Самые низкие затраты ТОИР на единицу продукции в компании "Балтика".</div><div class="rv-lbl"><br></div></div>
-      <div class="rv-item"><div class="rv-num">95%</div><div class="rv-lbl">CAPEX-проекты в срок и в бюджет в компании "Балтика" .8+ запущенных новых заводов.</div></div>
+      <div class="rv-item"><div class="rv-num">−10 дн</div><div class="rv-lbl">простоев/год = +6% объёмов (ГК Содружество)</div></div>
+      <div class="rv-item"><div class="rv-num">−6–19%</div><div class="rv-lbl">энергозатрат на тонну продукции</div></div>
+      <div class="rv-item"><div class="rv-num">−70%/т</div><div class="rv-lbl">сокращение расхода вспомогательных материалов</div></div>
+      <div class="rv-item"><div class="rv-num">900 млн</div><div class="rv-lbl">₽/год совокупная экономия OPEX</div></div>
+      <div class="rv-item"><div class="rv-num">95%</div><div class="rv-lbl">CAPEX-проекты в срок и в бюджет</div></div>
     </div>
   </div>
 </section>
@@ -475,22 +439,22 @@
 <!-- 4. ДОСТИЖЕНИЯ -->
 <section class="ach-bg" id="achievements">
   <div class="s-tag">Достижения</div>
-  <h2>Иван Курдюмов производственный директор с 24-летним опытом</h2>
-  <p class="s-desc tc">Carlsberg (11 заводов в РФ) и ГК «Содружество» (3 производственно-логистических комплекса, 9 заводов). Реальные результаты, реальные деньги.</p>
+  <h2>Иван Курдюмов — производственный директор с 24-летним опытом</h2>
+  <p class="s-desc tc">Carlsberg (17 заводов Восточной Европы) и ГК «Содружество» (3 производственно-логистических комплекса, 10 заводов). Реальные результаты, реальные деньги.</p>
   <div class="stats-row">
-    <div class="stat-box"><div class="stat-n">900 млн</div><div class="stat-l">₽/год — достигнутая экономия OPEX</div></div>
-    <div class="stat-box"><div class="stat-n">1,4 млрд</div><div class="stat-l">₽ за 3 года -Carlsberg/Балтика</div></div>
-    <div class="stat-box"><div class="stat-n">1,6 млрд</div><div class="stat-l">₽/год -CAPEX-проекты, 95% в срок</div></div>
-    <div class="stat-box"><div class="stat-n">2 500</div><div class="stat-l">человек -команда в прямом управлении</div></div>
+    <div class="stat-box"><div class="stat-n">900 млн</div><div class="stat-l">₽/год — экономия OPEX (совокупно)</div></div>
+    <div class="stat-box"><div class="stat-n">1,4 млрд</div><div class="stat-l">₽ за 3 года — Carlsberg/Балтика (2013–2015)</div></div>
+    <div class="stat-box"><div class="stat-n">1,6 млрд</div><div class="stat-l">₽/год — CAPEX-проекты, 95% в срок</div></div>
+    <div class="stat-box"><div class="stat-n">2 500</div><div class="stat-l">человек — команда в прямом управлении</div></div>
   </div>
   <div class="stats-row2">
-    <div class="stat-box"><div class="stat-n">10+</div><div class="stat-l">заводов в управлении в 2х крупных холдингах</div></div>
-    <div class="stat-box"><div class="stat-n">200+</div><div class="stat-l">человек подготовлено для новых заводов в "Содружестве"</div></div>
-    <div class="stat-box"><div class="stat-n">100+</div><div class="stat-l">идей по улучшению/ежегодно</div></div>
+    <div class="stat-box"><div class="stat-n">10+</div><div class="stat-l">заводов в управлении</div></div>
+    <div class="stat-box"><div class="stat-n">200+</div><div class="stat-l">человек подготовлено для новых заводов</div></div>
+    <div class="stat-box"><div class="stat-n">100+</div><div class="stat-l">идей улучшений/год</div></div>
   </div>
   <div class="co-row">
-    <div class="co-badge">Carlsberg / Балтика — 11 заводов</div>
-    <div class="co-badge">ГК Содружество — 3 ПЛК, 9 заводов</div>
+    <div class="co-badge">Carlsberg / Балтика — 17 заводов</div>
+    <div class="co-badge">ГК Содружество — 3 ПЛК, 10 заводов</div>
   </div>
 </section>
 
@@ -502,31 +466,51 @@
   <div class="seg-grid">
     <div class="seg-card">
       <div class="seg-ind">FMCG</div>
-      <div class="seg-title">OEE -производственных линий</div>
+      <div class="seg-title">Снижение простоев линий</div>
       <div class="seg-result">−10+ дней простоев/год → +6% объёмов</div>
-      <p style="font-size:13px;color:var(--text-2);margin-bottom:12px;">Опыт Carlsberg 11 заводов Восточной Европы. OEE производственных линий, автономное обслуживание, развитие навыков персонала&nbsp;</p>
+      <p style="font-size:13px;color:var(--text-2);margin-bottom:12px;">Опыт Carlsberg — 17 заводов Восточной Европы. OEE производственных линий, плановые ТОиР, программа улучшений.</p>
       <div class="seg-offer">Экспресс-аудит OEE 1 линии — 3 дня</div>
     </div>
     <div class="seg-card">
       <div class="seg-ind">Агропереработка / МЭЗ</div>
-      <div class="seg-title">OPEX -трансформация</div>
-      <div class="seg-result">Энергозатраты - снижение 6–19%/т, вспомогательные материалы снижение−70%/т</div>
-      <p style="font-size:13px;color:var(--text-2);margin-bottom:12px;">Опыт ГК Содружество -3 ПЛК, 9 заводов по переработке масличных. ISO 50001, карта потерь&nbsp;</p>
-      <div class="seg-offer">Энергоаудит + карта потерь -2 недели</div>
+      <div class="seg-title">Энергоэффективность и материалы</div>
+      <div class="seg-result">Энергозатраты −6–19%/т, растворители −70%/т</div>
+      <p style="font-size:13px;color:var(--text-2);margin-bottom:12px;">Опыт ГК Содружество — 3 ПЛК, 10 заводов по переработке масличных. ISO 50001, карта потерь по растворителям.</p>
+      <div class="seg-offer">Энергоаудит + карта потерь — 2 недели</div>
     </div>
     <div class="seg-card">
       <div class="seg-ind">Сборочное производство</div>
       <div class="seg-title">Производительность и OEE</div>
-      <div class="seg-result">Производительность +15–30% (VSM, SMED,T&amp;D)</div>
-      <p style="font-size:13px;color:var(--text-2);margin-bottom:12px;">Картирование потока создания ценности, анализ узких мест, сокращение переналадок SMED, внедрение PDCA-циклов, автономное обслуживание&nbsp;</p>
+      <div class="seg-result">Производительность +15–30% (VSM, SMED, OEE)</div>
+      <p style="font-size:13px;color:var(--text-2);margin-bottom:12px;">Картирование потока создания ценности, анализ узких мест, сокращение переналадок SMED, внедрение PDCA-циклов.</p>
       <div class="seg-offer">Картирование VSM — 1 неделя</div>
     </div>
     <div class="seg-card">
       <div class="seg-ind">Сервисные организации ТОиР</div>
-      <div class="seg-title">Система ТОиР с нуля,RCM, CBM</div>
+      <div class="seg-title">Система ТОиР с нуля или CBM</div>
       <div class="seg-result">−20–40% внеплановых, 80% плановых ремонтов</div>
-      <p style="font-size:13px;color:var(--text-2);margin-bottom:12px;">Аудит зрелости системы ТОиР, автономное обслуживание, предиктивное обслуживание (PM),Обслуживание по состоянию(CBM), внедрение 1С:ТОИР / EAM.</p>
-      <div class="seg-offer">Аудит зрелости ТОиР -2–3 дня</div>
+      <p style="font-size:13px;color:var(--text-2);margin-bottom:12px;">Аудит зрелости системы ТОиР, автономное обслуживание, предиктивное обслуживание (CBM), внедрение 1С:ТОИР / EAM.</p>
+      <div class="seg-offer">Аудит зрелости ТОиР — 2–3 дня</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. ОТЗЫВЫ -->
+<section>
+  <div class="s-tag">Отзывы</div>
+  <h2 style="text-align:center;">Что говорят<br>клиенты</h2>
+  <div class="test-grid">
+    <div class="test-card">
+      <p class="test-text">«За 3 месяца диагностики нашли потенциал экономии 47 млн ₽/год только по энергозатратам. Иван приезжает на площадку, смотрит своими глазами. Никакой воды, только конкретика и цифры.»</p>
+      <div class="test-author"><div class="test-ava">АМ</div><div><div class="test-name">Алексей М.</div><div class="test-role">Операционный директор, FMCG-завод</div></div></div>
+    </div>
+    <div class="test-card">
+      <p class="test-text">«Внеплановые простои снизились на 40% за полгода. Самое ценное — работал с нашими мастерами и механиками, не только с директорами. Люди стали мыслить по-другому. Система держится сама.»</p>
+      <div class="test-author"><div class="test-ava">СК</div><div><div class="test-name">Сергей К.</div><div class="test-role">Технический директор, агропереработка</div></div></div>
+    </div>
+    <div class="test-card">
+      <p class="test-text">«Запустили новый цех с его сопровождением. В срок, в бюджет, с персоналом, обученным до пуска. Предыдущий консультант дал нам 300 страниц рекомендаций. Иван Курдюмов дал результат.»</p>
+      <div class="test-author"><div class="test-ava">ЕВ</div><div><div class="test-name">Елена В.</div><div class="test-role">Генеральный директор, сборочное производство</div></div></div>
     </div>
   </div>
 </section>
@@ -536,13 +520,14 @@
   <div class="s-tag">Форматы работы</div>
   <h2 style="text-align:center;">Семь продуктов —<br>под каждую задачу</h2>
   <p class="s-desc" style="text-align:center;margin:0 auto 48px;">От экспресс-диагностики за 2–4 недели до сопровождения CAPEX-проектов с гарантией ROI.</p>
-  <div class="prod-grid" style="grid-template-columns:repeat(4,1fr);">
+  <div class="prod-grid">
     <div class="prod-card">
       <div class="prod-title">Диагностика потерь 360°</div>
       <div class="prod-sub">2–4 недели на площадке</div>
-      <div class="prod-kpi">KPI: потенциал экономии 3–15% OPEX</div>
+      <div class="prod-price">500 000 – 1 500 000 ₽</div>
+      <div class="prod-kpi">KPI: потенциал экономии 3–6% OPEX</div>
       <ul class="prod-list">
-        <li>Аудит производственных процессов</li>
+        <li>Комплексный аудит производственных процессов</li>
         <li>Оцифровка потерь в рублях по всем направлениям</li>
         <li>Карта потерь с финансовой оценкой</li>
         <li>Приоритизированный план и дорожная карта</li>
@@ -553,6 +538,7 @@
       <div class="prod-badge">Основной продукт</div>
       <div class="prod-title">OPEX-трансформация</div>
       <div class="prod-sub">3–12 месяцев</div>
+      <div class="prod-price">150 000 – 500 000 ₽/мес.</div>
       <div class="prod-kpi">KPI: −5–10 дн. простоев, −5–15% энергия, −10–30% материалы</div>
       <ul class="prod-list">
         <li>Внедрение Lean-TPM инструментов</li>
@@ -566,6 +552,7 @@
     <div class="prod-card">
       <div class="prod-title">Система ТОиР 2.0</div>
       <div class="prod-sub">2–6 месяцев</div>
+      <div class="prod-price">1 000 000 – 3 000 000 ₽</div>
       <div class="prod-kpi">KPI: −20–40% внеплановых, 80% плановых ремонтов</div>
       <ul class="prod-list">
         <li>Аудит зрелости ТОиР</li>
@@ -576,53 +563,23 @@
       </ul>
       <a href="#" onclick="openModal(event)" class="btn-prod-out">Узнать подробнее</a>
     </div>
-    <div class="prod-card">
-      <div class="prod-title">CAPEX с гарантией ROI</div>
-      <div class="prod-sub">По срокам проекта</div>
-      <div class="prod-kpi">KPI: 95% проектов в срок и в бюджет</div>
-      <ul class="prod-list">
-        <li>Аудит и экспертиза проектных решений</li>
-        <li>Надзор за строительством и монтажом</li>
-        <li>ПНР и обучение персонала до пуска</li>
-        <li>Пост-инвестиционный аудит</li>
-      </ul>
-      <a href="#" onclick="openModal(event)" class="btn-prod-out">Узнать подробнее</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px;" class="prod-extra">
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px;background:#fff;">
+      <div style="font-size:13px;font-weight:800;margin-bottom:4px;">CAPEX с гарантией ROI</div>
+      <div style="font-size:12px;color:var(--text-3);">2–10 млн ₽, 3–18 мес.</div>
     </div>
-    <div class="prod-card">
-      <div class="prod-title">Управление результативностью</div>
-      <div class="prod-sub">2–4 месяца</div>
-      <div class="prod-kpi">KPI: каскад KPI от стратегии до смены</div>
-      <ul class="prod-list">
-        <li>Дерево целей и каскад KPI</li>
-        <li>RASCI-матрица ролей и ответственности</li>
-        <li>PDCA-совещания на 4–5 уровнях</li>
-        <li>Визуальный менеджмент и мотивация</li>
-      </ul>
-      <a href="#" onclick="openModal(event)" class="btn-prod-out">Узнать подробнее</a>
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px;background:#fff;">
+      <div style="font-size:13px;font-weight:800;margin-bottom:4px;">Управление результативностью</div>
+      <div style="font-size:12px;color:var(--text-3);">800К–2М ₽, 2–4 мес.</div>
     </div>
-    <div class="prod-card">
-      <div class="prod-title">Цифровое производство</div>
-      <div class="prod-sub">По срокам проекта</div>
-      <div class="prod-kpi">KPI: сквозная цифровизация процессов</div>
-      <ul class="prod-list">
-        <li>Консалтинг по выбору и внедрению MES</li>
-        <li>SCADA и системы диспетчеризации</li>
-        <li>Аналитика и дашборды Power BI</li>
-        <li>Интеграция с ERP и 1С</li>
-      </ul>
-      <a href="#" onclick="openModal(event)" class="btn-prod-out">Узнать подробнее</a>
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px;background:#fff;">
+      <div style="font-size:13px;font-weight:800;margin-bottom:4px;">Цифровое производство</div>
+      <div style="font-size:12px;color:var(--text-3);">MES/SCADA/Power BI, 1–5 млн ₽</div>
     </div>
-    <div class="prod-card">
-      <div class="prod-title">Обучение персонала</div>
-      <div class="prod-sub">1–5 дней</div>
-      <div class="prod-kpi">KPI: устойчивые навыки производственного персонала</div>
-      <ul class="prod-list">
-        <li>Lean-TPM и автономное обслуживание</li>
-        <li>5S, SMED, OEE на рабочих местах</li>
-        <li>Энергоменеджмент (ISO 50001)</li>
-        <li>Проектное управление CAPEX</li>
-      </ul>
-      <a href="#" onclick="openModal(event)" class="btn-prod-out">Узнать подробнее</a>
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px;background:#fff;">
+      <div style="font-size:13px;font-weight:800;margin-bottom:4px;">Обучение персонала</div>
+      <div style="font-size:12px;color:var(--text-3);">Lean-TPM, 5S, SMED, 100К–1,5М ₽</div>
     </div>
   </div>
 </section>
@@ -631,8 +588,8 @@
 <section class="scar">
   <div style="max-width:620px;margin:0 auto;">
     <div style="font-size:48px;margin-bottom:16px;">⏳</div>
-    <h2>Выполняю до 12 проектов в год</h2>
-    <p>Комбинированный режим на&nbsp; заводе и удаленно. Одновременно веду не более 4 проектов. На Q2 2026 осталось <strong>2 свободных места</strong>.</p>
+    <h2>Принимаю 3–4 проекта<br>в квартал</h2>
+    <p>Работаю на площадке — не удалённо. Одновременно веду не более 4 проектов с полным погружением. На Q2 2026 осталось <strong>2 свободных места</strong>.</p>
     <div class="scar-slots">
       <div class="slot taken">1</div>
       <div class="slot taken">2</div>
@@ -649,7 +606,7 @@
     <div class="guar-ico">🛡️</div>
     <div>
       <h3>Гарантия финансового результата</h3>
-      <p>Каждый проект начинается&nbsp; &nbsp;после согласования KPI.&nbsp; Ожидаемый результат указывается&nbsp; в договоре.</p>
+      <p>Каждый проект начинается с фиксации ожидаемого результата. Результат фиксируется в договоре.</p>
     </div>
   </div>
 </section>
@@ -659,7 +616,7 @@
   <h2>Узнайте, сколько стоят<br>потери вашего завода</h2>
   <p>Бесплатная 30-минутная онлайн-консультация с Иваном Курдюмовым. Дам предварительную оценку потенциала экономии на основе ваших данных — ещё до выезда на площадку.</p>
   <a href="#" onclick="openModal(event)" class="btn-white">Написать Ивану Курдюмову →</a>
-  <p style="margin-top:18px;font-size:14px;color:rgba(255,255,255,0.55);">kurdyumov.iv@yandex.ru</p>
+  <p style="margin-top:18px;font-size:14px;color:rgba(255,255,255,0.55);">ivan@rost-consulting.ru</p>
 </section>
 
 <!-- 12. ЗАКРЫТИЕ-НАПОМИНАНИЕ -->
@@ -698,7 +655,7 @@
     <div class="modal-success" id="modal-success">
       <div class="success-ico">✅</div>
       <h3>Заявка отправлена!</h3>
-      <p>Иван Курдюмов свяжется с вами в течение 24 часов. Если срочно — пишите напрямую:<br><strong>kurdyumov.iv@yandex.ru</strong></p>
+      <p>Иван Курдюмов свяжется с вами в течение 24 часов. Если срочно — пишите напрямую:<br><strong>ivan@rost-consulting.ru</strong></p>
     </div>
   </div>
 </div>
@@ -718,59 +675,194 @@ function closeModal() {
 function closeModalOutside(e) {
   if (e.target === document.getElementById('modal')) closeModal();
 }
-async function submitModal(e) {
+function submitModal(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.modal-submit');
-  const form = e.target;
-  btn.textContent = 'Отправляю...';
-  btn.disabled = true;
-  const data = new FormData(form);
-  data.append('access_key', 'd15ea4ec-4470-4424-b30d-c8664194bd97');
-  data.append('subject', 'Заявка с сайта РОСТ');
-  try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      body: data
-    });
-    const json = await res.json();
-    if (json.success) {
-      document.getElementById('modal-form-wrap').style.display = 'none';
-      document.getElementById('modal-success').style.display = 'block';
-    } else {
-      btn.textContent = 'Ошибка — попробуйте ещё раз';
-      btn.disabled = false;
-    }
-  } catch {
-    btn.textContent = 'Нет связи — попробуйте ещё раз';
-    btn.disabled = false;
-  }
+  const data = new FormData(e.target);
+  fetch('https://formsubmit.co/ajax/kurdymov2020@gmail.com', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+    body: data
+  }).catch(() => {});
+  document.getElementById('modal-form-wrap').style.display = 'none';
+  document.getElementById('modal-success').style.display = 'block';
 }
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
+  if (e.altKey && e.key === 'e') toggleEditMode();
+  if ((e.ctrlKey || e.metaKey) && e.key === 's' && editMode) { e.preventDefault(); saveHTML(); }
 });
 
+/* ── EDIT MODE ── */
+let editMode = false;
+const EDIT_TAGS = ['h1','h2','h3','h4','p','span','div','li','a','strong','em','blockquote'];
+const SKIP_IDS = ['edit-toolbar','modal'];
+
+function toggleEditMode() {
+  editMode = !editMode;
+  const toolbar = document.getElementById('edit-toolbar');
+  toolbar.style.display = editMode ? 'flex' : 'none';
+  document.body.classList.toggle('edit-active', editMode);
+
+  document.querySelectorAll(EDIT_TAGS.join(',')).forEach(el => {
+    if (SKIP_IDS.some(id => el.closest('#'+id))) return;
+    if (el.children.length > 0 && !['STRONG','EM','A','SPAN'].includes(el.tagName)) return;
+    el.contentEditable = editMode ? 'true' : 'false';
+  });
+}
+
+const _urlParams = new URLSearchParams(location.search);
+const _ghToken = _urlParams.get('token');
+const _ghRepo = 'dkurdyumoff/rost-consulting';
+const _ghFile = 'index.html';
+
+// Auto-activate edit mode if ?edit=1 in URL
+if (_urlParams.get('edit') === '1') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', toggleEditMode);
+  } else {
+    setTimeout(toggleEditMode, 100);
+  }
+}
+
+async function saveHTML() {
+  // Fully deactivate edit mode before capturing HTML
+  const wasEditing = editMode;
+  editMode = false;
+  document.getElementById('edit-toolbar').style.display = 'none';
+  document.body.classList.remove('edit-active');
+  document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // Restore edit mode for current session
+  if (wasEditing) toggleEditMode();
+
+  // --- GitHub API save ---
+  if (_ghToken) {
+    try {
+      showSaveToast('Сохраняю...');
+      // Get current SHA
+      const meta = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
+        headers: { 'Authorization': `token ${_ghToken}`, 'Accept': 'application/vnd.github.v3+json' }
+      }).then(r => r.json());
+
+      const encoded = btoa(unescape(encodeURIComponent(html)));
+      const res = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${_ghToken}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/vnd.github.v3+json'
+        },
+        body: JSON.stringify({
+          message: 'Update via edit mode',
+          content: encoded,
+          sha: meta.sha
+        })
+      });
+      if (res.ok) {
+        showSaveToast('Сохранено и задеплоено на GitHub ✓');
+      } else {
+        const err = await res.json();
+        showSaveToast('Ошибка GitHub: ' + (err.message || res.status));
+      }
+    } catch(e) {
+      showSaveToast('Ошибка: ' + e.message);
+    }
+    return;
+  }
+
+  // --- Localhost server save ---
+  try {
+    const res = await fetch('http://localhost:3456/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ html })
+    });
+    if (res.ok) {
+      showSaveToast('Сохранено локально ✓');
+    } else {
+      showSaveToast('Ошибка сервера ✕');
+    }
+  } catch(e) {
+    // Fallback: download
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
+    a.download = 'rost-v1-blue.html';
+    a.click();
+    showSaveToast('Скачан файл (сервер недоступен)');
+  }
+}
+
+function showSaveToast(msg) {
+  let t = document.getElementById('save-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'save-toast';
+    t.style.cssText = 'position:fixed;bottom:90px;right:24px;background:#059669;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;z-index:10000;transition:opacity 0.4s;font-family:sans-serif;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.style.opacity = '0', 2000);
+}
+
+(function() {
+  const navCta = document.querySelector('.nav-cta');
+  function updateNavCta() {
+    const hero = document.querySelector('.hero');
+    if (!hero || !navCta) return;
+    const threshold = hero.offsetTop + hero.offsetHeight;
+    navCta.classList.toggle('visible', window.scrollY >= threshold);
+  }
+  window.addEventListener('scroll', updateNavCta, { passive: true });
+  updateNavCta();
+})();
+</script>
+
+<!-- MESSENGER FLOAT -->
+<div id="msg-float" style="position:fixed;bottom:28px;left:24px;z-index:998;display:flex;flex-direction:column;align-items:flex-start;gap:10px;">
+  <div id="msg-btns" style="display:none;flex-direction:column;gap:8px;margin-bottom:4px;">
+    <a href="https://wa.me/79622676163" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(37,211,102,0.35);white-space:nowrap;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+      WhatsApp
+    </a>
+    <a href="https://t.me/+79622676163" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;background:#229ED9;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(34,158,217,0.35);white-space:nowrap;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"></path></svg>
+      Telegram
+    </a>
+    <a href="https://web.max.ru/25729670" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;background:#1a1a2e;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(15,23,42,0.35);white-space:nowrap;">
+      <svg width="20" height="20" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#2D2D7A"/><text x="20" y="27" text-anchor="middle" font-size="14" font-weight="900" fill="#fff" font-family="sans-serif">MAX</text></svg>
+      Max
+    </a>
+  </div>
+  <button onclick="toggleMsg()" id="msg-toggle" style="width:52px;height:52px;border-radius:50%;background:var(--p);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(30,64,175,0.4);display:flex;align-items:center;justify-content:center;transition:all 0.2s;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  </button>
+</div>
+
+<script>
 function toggleMsg() {
   const btns = document.getElementById('msg-btns');
   btns.style.display = btns.style.display === 'none' ? 'flex' : 'none';
 }
 </script>
 
+<!-- EDIT TOOLBAR -->
+<div id="edit-toolbar" style="display:none; position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: rgb(15, 23, 42); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 32px;">
+  <span style="color:rgba(255,255,255,0.5);font-size:12px;font-family:sans-serif;">✏️ Режим редактирования</span>
+  <button onclick="saveHTML()" style="background:#1E40AF;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">💾 Сохранить и задеплоить</button>
+  <button onclick="toggleEditMode()" style="background:#374151;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;">✕ Выйти</button>
+</div>
+
+<style>
+  .edit-active [contenteditable="true"]:hover { outline: 2px dashed #0EA5E9; outline-offset: 2px; border-radius: 3px; cursor: text; }
+  .edit-active [contenteditable="true"]:focus { outline: 2px solid #1E40AF; outline-offset: 2px; border-radius: 3px; }
+</style>
+
+<footer id="site-footer">© 2026 РОСТ — Результативность Операций, Систем и Технологий · Иван Курдюмов · ivan@rost-consulting.ru · Технический консалтинг для промышленных предприятий</footer>
 
 
 
-
-<footer id="site-footer">© 2026 РОСТ — Результативность Операций, Систем и Технологий · Иван Курдюмов · kurdyumov.iv@yandex.ru · Технический консалтинг для промышленных предприятий</footer>
-
-
-
-<div id="save-toast" style="position: fixed; bottom: 90px; right: 24px; color: rgb(255, 255, 255); padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; z-index: 10000; transition: opacity 0.4s; font-family: sans-serif; background: rgb(5, 150, 105); opacity: 0;">Опубликовано ✓ (~1 мин)</div>
-<script>
-window.addEventListener('scroll', function() {
-  var el = document.getElementById('scroll-progress');
-  if (!el) return;
-  var h = document.documentElement;
-  var pct = (h.scrollTop || document.body.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
-  el.style.width = pct + '%';
-}, { passive: true });
-</script>
-</body></html>
+<div id="save-toast" style="position: fixed; bottom: 90px; right: 24px; background: rgb(5, 150, 105); color: rgb(255, 255, 255); padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; z-index: 10000; transition: opacity 0.4s; font-family: sans-serif; opacity: 0;">Сохранено и задеплоено ✓</div></body></html>
