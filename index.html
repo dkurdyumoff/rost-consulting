@@ -855,10 +855,11 @@ window.addEventListener('scroll', function() {
 </script>
 
 <!-- EDIT MODE -->
-<div id="edit-toolbar" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:10001;background:#1E293B;border-radius:12px;padding:10px 16px;display:none;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+<div id="edit-toolbar" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:10001;background:#1E293B;border-radius:12px;padding:10px 16px;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
   <span style="color:rgba(255,255,255,0.5);font-size:12px;font-family:sans-serif;">✏️ Режим редактирования</span>
-  <button onclick="saveHTML()" style="background:#1E40AF;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">💾 Сохранить и задеплоить</button>
-  <button onclick="toggleEditMode()" style="background:#374151;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;">✕ Выйти</button>
+  <button onclick="downloadHTML()" style="background:#374151;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">⬇ Сохранить HTML</button>
+  <button onclick="publishHTML()" style="background:#1E40AF;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">🚀 Опубликовать</button>
+  <button onclick="toggleEditMode()" style="background:#111827;color:rgba(255,255,255,0.5);border:none;padding:8px 12px;border-radius:8px;font-size:13px;cursor:pointer;">✕</button>
 </div>
 
 <script>
@@ -898,40 +899,49 @@ function toggleEditMode() {
   }
 }
 
-async function saveHTML() {
+function captureHTML() {
   const wasEditing = editMode;
   editMode = false;
-  const toolbar = document.getElementById('edit-toolbar');
-  toolbar.style.display = 'none';
+  document.getElementById('edit-toolbar').style.display = 'none';
   document.body.classList.remove('edit-active');
   document.querySelectorAll('[contenteditable]').forEach(el => {
     el.removeAttribute('contenteditable');
     el.style.outline = '';
     el.style.borderRadius = '';
   });
-
   const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-
   if (wasEditing) setTimeout(toggleEditMode, 100);
+  return html;
+}
 
-  if (_ghToken) {
-    try {
-      const getRes = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
-        headers: { 'Authorization': `token ${_ghToken}`, 'User-Agent': 'rost-editor' }
-      });
-      const fileData = await getRes.json();
-      const content = btoa(unescape(encodeURIComponent(html)));
-      const putRes = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
-        method: 'PUT',
-        headers: { 'Authorization': `token ${_ghToken}`, 'Content-Type': 'application/json', 'User-Agent': 'rost-editor' },
-        body: JSON.stringify({ message: 'Edit via browser', content, sha: fileData.sha })
-      });
-      if (putRes.ok) showToast('Сохранено и задеплоено ✓');
-      else showToast('Ошибка сохранения');
-    } catch(e) { showToast('Ошибка: ' + e.message); }
-  } else {
-    showToast('Нет токена — изменения не сохранены');
-  }
+function downloadHTML() {
+  const html = captureHTML();
+  const blob = new Blob([html], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'index.html';
+  a.click();
+  showToast('HTML сохранён ✓');
+}
+
+async function publishHTML() {
+  const html = captureHTML();
+  if (!_ghToken) { showToast('Нет токена для публикации'); return; }
+  showToast('Публикую...');
+  try {
+    const getRes = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
+      headers: { 'Authorization': `token ${_ghToken}`, 'User-Agent': 'rost-editor' }
+    });
+    const fileData = await getRes.json();
+    const content = btoa(unescape(encodeURIComponent(html)));
+    const putRes = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${_ghToken}`, 'Content-Type': 'application/json', 'User-Agent': 'rost-editor' },
+      body: JSON.stringify({ message: 'Edit via browser', content, sha: fileData.sha })
+    });
+    if (putRes.ok) showToast('Опубликовано ✓ (~1 мин)');
+    else showToast('Ошибка публикации');
+  } catch(e) { showToast('Ошибка: ' + e.message); }
 }
 
 function showToast(msg) {
@@ -944,7 +954,7 @@ function showToast(msg) {
 
 document.addEventListener('keydown', e => {
   if (e.altKey && e.key === 'e') toggleEditMode();
-  if ((e.ctrlKey || e.metaKey) && e.key === 's' && editMode) { e.preventDefault(); saveHTML(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 's' && editMode) { e.preventDefault(); publishHTML(); }
 });
 
 if (_urlParams.get('edit') === '1') {
