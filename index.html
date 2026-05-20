@@ -50,7 +50,8 @@
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
   .hero h1 { font-size: clamp(28px, 3.8vw, 48px); font-weight: 900; line-height: 1.12; letter-spacing: -2px; margin-bottom: 20px; }
   .hero h1 em { font-style: normal; background: linear-gradient(135deg, var(--p), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero-sub { font-size: 16px; color: var(--text-2); margin-bottom: 14px; line-height: 1.75; max-width: 520px; }
+  .hero-sub { font-size: 16px; font-family: inherit; color: var(--text-2); margin-bottom: 14px; line-height: 1.75; max-width: 520px; }
+  .hero-sub * { font-family: inherit !important; font-size: inherit !important; }
   .hero-founder { font-size: 14px; color: var(--text-2); font-weight: 500; margin-bottom: 32px; padding: 14px 16px; background: var(--bg2); border-left: 3px solid var(--p); border-radius: 0 8px 8px 0; line-height: 1.6; }
   .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
   .btn-main { background: var(--p); color: #fff; padding: 14px 28px; border-radius: 10px; font-size: 16px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(30,64,175,0.3); }
@@ -302,7 +303,7 @@
 <section class="hero">
   <div>
     <h1>Ваш завод теряет <em>3–15% операционного бюджета</em> ежедневно</h1>
-    <p class="hero-sub">РОСТ — технический консалтинг для промышленных предприятий. <span style="font-size: 18px;">Поможем разобраться где и как не терять деньги на простоях, перерасходе ресурсов и неэффективных процессах - через диагностику, оцифровку потерь и внедрение проверенных инструментов с измеримым финансовым результатом.</span></p>
+    <p class="hero-sub">РОСТ — технический консалтинг для промышленных предприятий. Поможем разобраться где и как не терять деньги на простоях, перерасходе ресурсов и неэффективных процессах — через диагностику, оцифровку потерь и внедрение проверенных инструментов с измеримым финансовым результатом.</p>
     <p class="hero-founder">Иван Курдюмов -производственный директор с 24-летним опытом. 10+ заводов в управлении, команды до 2 500 человек в Carlsberg и «Содружестве». Предлагаю не&nbsp; стратегии в PowerPoint, а&nbsp; руки на площадке и подтверждённый финансовый результат.</p>
     <div class="hero-actions">
       <a href="#" onclick="openModal(event)" class="btn-main">Заказать диагностику →</a>
@@ -727,15 +728,17 @@ async function submitModal(e) {
   btn.textContent = 'Отправляю...';
   btn.disabled = true;
   const data = new FormData(form);
-  data.append('access_key', 'd15ea4ec-4470-4424-b30d-c8664194bd97');
-  data.append('subject', 'Заявка с сайта РОСТ');
+  data.append('_subject', 'Заявка с сайта РОСТ');
+  data.append('_captcha', 'false');
+  data.append('_template', 'table');
   try {
-    const res = await fetch('https://api.web3forms.com/submit', {
+    const res = await fetch('https://formsubmit.co/ajax/kurdyumov.iv@yandex.ru', {
       method: 'POST',
+      headers: { 'Accept': 'application/json' },
       body: data
     });
     const json = await res.json();
-    if (json.success) {
+    if (json.success === 'true' || json.success === true) {
       document.getElementById('modal-form-wrap').style.display = 'none';
       document.getElementById('modal-success').style.display = 'block';
     } else {
