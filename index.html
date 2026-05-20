@@ -38,9 +38,6 @@
   }
   .nav-logo { font-size: 20px; font-weight: 900; color: var(--p); letter-spacing: -1px; }
   .nav-tagline { font-size: 12px; color: var(--text-3); font-weight: 500; }
-  .nav-cta { background: var(--p); color: #fff; padding: 9px 22px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; transition: opacity 0.3s, background 0.2s, transform 0.2s; opacity: 0; pointer-events: none; }
-  .nav-cta.visible { opacity: 1; pointer-events: auto; }
-  .nav-cta:hover { background: var(--p-dark); transform: translateY(-1px); }
 
   /* HERO */
   .hero { min-height: 100vh; padding: 100px 5% 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; overflow: hidden; }
@@ -251,7 +248,6 @@
   /* NAV mobile */
   @media (max-width: 640px) {
     .nav-tagline { display:none; }
-    .nav-cta { font-size:11px; padding:6px 12px; white-space:nowrap; flex-shrink:0; }
     nav { padding: 0 4%; gap: 12px; }
     .nav-logo { font-size:24px; }
   }
@@ -323,7 +319,6 @@
     <div class="nav-logo">РОСТ</div>
     <div class="nav-tagline">Результативность Операций, Систем и Технологий</div>
   </div>
-  <a href="#" onclick="openModal(event)" class="nav-cta">Записаться на диагностику →</a>
 </nav>
 
 <!-- 1. HERO / ВНИМАНИЕ -->
@@ -836,16 +831,5 @@ window.addEventListener('scroll', function() {
   el.style.width = pct + '%';
 }, { passive: true });
 
-(function() {
-  var navCta = document.querySelector('.nav-cta');
-  function updateNavCta() {
-    var hero = document.querySelector('.hero');
-    if (!hero || !navCta) return;
-    var threshold = hero.offsetTop + hero.offsetHeight;
-    navCta.classList.toggle('visible', window.scrollY >= threshold);
-  }
-  window.addEventListener('scroll', updateNavCta, { passive: true });
-  updateNavCta();
-})();
 </script>
 </body></html>
