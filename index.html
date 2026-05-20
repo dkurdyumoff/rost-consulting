@@ -853,4 +853,106 @@ window.addEventListener('scroll', function() {
   updateNavCta();
 })();
 </script>
+
+<!-- EDIT MODE -->
+<div id="edit-toolbar" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:10001;background:#1E293B;border-radius:12px;padding:10px 16px;display:none;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+  <span style="color:rgba(255,255,255,0.5);font-size:12px;font-family:sans-serif;">✏️ Режим редактирования</span>
+  <button onclick="saveHTML()" style="background:#1E40AF;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">💾 Сохранить и задеплоить</button>
+  <button onclick="toggleEditMode()" style="background:#374151;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;">✕ Выйти</button>
+</div>
+
+<script>
+const _urlParams = new URLSearchParams(location.search);
+const _ghToken = _urlParams.get('token');
+const _ghRepo = 'dkurdyumoff/rost-consulting';
+const _ghFile = 'index.html';
+
+let editMode = false;
+
+function toggleEditMode() {
+  editMode = !editMode;
+  const toolbar = document.getElementById('edit-toolbar');
+  toolbar.style.display = editMode ? 'flex' : 'none';
+  document.body.classList.toggle('edit-active', editMode);
+  const editables = ['h1','h2','h3','p','li','span.stat-n','span.stat-l','div.stat-n','div.stat-l',
+    '.s-desc','.hero-sub','.hero-founder','.step-title','.step-text','.ben-title','.ben-text',
+    '.prob-title','.prob-text','.seg-title','.seg-result','.seg-offer','.test-text',
+    '.rv-num','.rv-lbl','.co-badge','.founder-quote','.founder-co-name','.founder-co-role',
+    '.founder-co-result','.founder-stat-n','.founder-stat-l','.founder-fullname','.founder-role'];
+  if (editMode) {
+    editables.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        if (!el.closest('#edit-toolbar') && !el.closest('nav') && !el.closest('.modal') && !el.closest('footer')) {
+          el.setAttribute('contenteditable', 'true');
+          el.style.outline = '2px dashed rgba(59,130,246,0.5)';
+          el.style.borderRadius = '3px';
+        }
+      });
+    });
+  } else {
+    document.querySelectorAll('[contenteditable]').forEach(el => {
+      el.removeAttribute('contenteditable');
+      el.style.outline = '';
+      el.style.borderRadius = '';
+    });
+  }
+}
+
+async function saveHTML() {
+  const wasEditing = editMode;
+  editMode = false;
+  const toolbar = document.getElementById('edit-toolbar');
+  toolbar.style.display = 'none';
+  document.body.classList.remove('edit-active');
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    el.removeAttribute('contenteditable');
+    el.style.outline = '';
+    el.style.borderRadius = '';
+  });
+
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  if (wasEditing) setTimeout(toggleEditMode, 100);
+
+  if (_ghToken) {
+    try {
+      const getRes = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
+        headers: { 'Authorization': `token ${_ghToken}`, 'User-Agent': 'rost-editor' }
+      });
+      const fileData = await getRes.json();
+      const content = btoa(unescape(encodeURIComponent(html)));
+      const putRes = await fetch(`https://api.github.com/repos/${_ghRepo}/contents/${_ghFile}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `token ${_ghToken}`, 'Content-Type': 'application/json', 'User-Agent': 'rost-editor' },
+        body: JSON.stringify({ message: 'Edit via browser', content, sha: fileData.sha })
+      });
+      if (putRes.ok) showToast('Сохранено и задеплоено ✓');
+      else showToast('Ошибка сохранения');
+    } catch(e) { showToast('Ошибка: ' + e.message); }
+  } else {
+    showToast('Нет токена — изменения не сохранены');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('save-toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.style.opacity = '0', 3000);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.altKey && e.key === 'e') toggleEditMode();
+  if ((e.ctrlKey || e.metaKey) && e.key === 's' && editMode) { e.preventDefault(); saveHTML(); }
+});
+
+if (_urlParams.get('edit') === '1') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', toggleEditMode);
+  } else {
+    setTimeout(toggleEditMode, 100);
+  }
+}
+</script>
 </body></html>
